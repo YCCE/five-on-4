@@ -1,0 +1,11 @@
+.header-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+.navigation-section {
+    width: 50vw;
+    display: flex;
+    list-style: none;
+    justify-content: space-evenly;
+    padding: 0;
+}
