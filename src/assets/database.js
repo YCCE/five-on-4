@@ -104,43 +104,160 @@ export const matches_static = [
 export const matches_dynamic = [
     {
         match_id: 1,
-        users_signed_up: [
-            {user_id: 1, user_signed_up: true, plus: 2}
-        ],
-        users_attended: [
-            {user_id: 1, user_attended: true, plus: 2}
-        ],
-        match_score: {
-            home: {
-                goals: 0,
-                scorers: [0],
+        users_signed_up: [1],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [1,1,1]
             },
-            away: {
-                goals: 0,
-                scorers: [],
-            }
+            users_attended: [1],
+        }
+    },    
+    {
+        match_id: 2,
+        users_signed_up: [1],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1],
         }
     },
     {
-        match_id: 2,
-        users_signed_up: [
-            {user_id: 1, user_signed_up: true, plus: 1}
-        ],
-        users_attended: [
-            {user_id: 1, user_attended: true, plus: 1}
-        ],
-        match_score: {
-            home: {
-                goals: 0,
-                scorers: [],
+        match_id: 3,
+        users_signed_up: [2],
+        match_report: {
+            score: {
+                home: 1,
+                away: 0,
+                home_scorers: [1],
+                away_scorers: []
             },
-            away: {
-                goals: 0,
-                scorers: [],
-            }
+            users_attended: [1],
         }
     },
-
+    {
+        match_id: 4,
+        users_signed_up: [1],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1],
+        }
+    },
+    {
+        match_id: 5,
+        users_signed_up: [2,1],
+        match_report: {
+            score: {
+                home: 2,
+                away: 0,
+                home_scorers: [2,1],
+                away_scorers: []
+            },
+            users_attended: [1,2],
+        }
+    },
+    {
+        match_id: 6,
+        users_signed_up: [2],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1],
+        }
+    },
+    {
+        match_id: 7,
+        users_signed_up: [2],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [2,2,]
+            },
+            users_attended: [1,2],
+        }
+    },
+    {
+        match_id: 8,
+        users_signed_up: [1,2],
+        match_report: {
+            score: {
+                home: 1,
+                away: 3,
+                home_scorers: [2],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1,2],
+        }
+    },
+    {
+        match_id: 9,
+        users_signed_up: [2,1],
+        match_report: {
+            score: {
+                home: 2,
+                away: 3,
+                home_scorers: [1,1],
+                away_scorers: [2,2,2]
+            },
+            users_attended: [1,2],
+        }
+    },
+    {
+        match_id: 10,
+        users_signed_up: [1],
+        match_report: {
+            score: {
+                home: 0,
+                away: 3,
+                home_scorers: [],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1],
+        }
+    },
+    {
+        match_id: 11,
+        users_signed_up: [1,2],
+        match_report: {
+            score: {
+                home: 0,
+                away: 1,
+                home_scorers: [],
+                away_scorers: [2]
+            },
+            users_attended: [1, 2],
+        }
+    },
+    {
+        match_id: 12,
+        users_signed_up: [2],
+        match_report: {
+            score: {
+                home: 3,
+                away: 3,
+                home_scorers: [2,2,2],
+                away_scorers: [1,1,1]
+            },
+            users_attended: [1, 2],
+        }
+    },
 ]
 
 /* export const matches = [
