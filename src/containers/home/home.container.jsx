@@ -4,7 +4,7 @@ import MatchPreview from "../../components/match-preview/match-preview.component
 
 import "./home.styles.css";
 
-const Home = ({matches, logged_user, setStateProperty}) => (
+const Home = ({matches, logged_user}) => (
     <div>
         <h1>Home Container</h1>
         <ul>
@@ -26,7 +26,7 @@ const Home = ({matches, logged_user, setStateProperty}) => (
                 )
             })
             .filter((match, index) => index < 3)
-            .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreview match={upcoming_match} logged_user={logged_user} setStateProperty={setStateProperty} /></li>)
+            .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreview match={upcoming_match} logged_user={logged_user} /></li>)
             }
         </ul>
         <ul>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./header.styles.css";
 
-const Header = ({logged_user, setStateProperty}) => (
+const Header = ({logged_user, setStateLoggedUser}) => (
     <div className="header">
         <nav className="header-navigation">
             <ul className="navigation-section">
@@ -14,8 +14,8 @@ const Header = ({logged_user, setStateProperty}) => (
             <ul className="navigation-section">
                 {logged_user.name? 
                     (<>
-                        <li>Hello, {logged_user.name}. Signed up matches: {logged_user.joined_matches.length}</li>
-                        <li onClick={() => setStateProperty("logged_user", {name: "", email: "", joined_matches: []})}>Logout</li>
+                        <li>Hello, {logged_user.name.charAt(0).toUpperCase()+logged_user.name.slice(1)}. Signed up matches: {logged_user.joined_matches.length}</li>
+                        <li onClick={setStateLoggedUser}>Logout</li>
                     </>):
                     (<>
                         <li><Link to="/login">Login</Link></li>

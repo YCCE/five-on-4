@@ -2,15 +2,13 @@ import React from "react";
 import { useParams, useHistory, Link } from "react-router-dom";
 
 import "./match-detailed.styles.css";
-import { matches_static } from "../../assets/database";
 
-
-const MatchDetailed = () => {
+const MatchDetailed = ({matches}) => {
     const { id } = useParams();
     const { goBack } = useHistory();
-    const match = matches_static.find(match => match.match_id === Number(id))
-    console.log(match);
-    if(!matches_static.length) return null;
+    const match = matches.find(match => match.match_id === Number(id))
+
+    if(!matches.length) return null;
     
     return (
         <div>

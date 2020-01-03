@@ -9,15 +9,11 @@ import CreateMatch from "./components/create-match/create-match.component";
 import UpdateMatch from "./components/update-match/update-match.component";
 import Login from "./components/login/login.component";
 
-
-import { users, matches_static, matches_dynamic } from './assets/database';
-
 class  App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       matches: [],
-      active_match_id: "",
       logged_user: {
         id: 1,
         name: "karlo",
@@ -27,21 +23,31 @@ class  App extends React.Component {
     }
   }
   componentDidMount(){
-    this.setState({matches: matches_static.slice().sort((a,b) => new Date(a.date_start) - new Date(b.date_start))});
+    this.onEndPointFetch("get")
+    .then(matches => this.setStateMatches(matches))
   }
   // setting state data from the app
-  setStateProperty = (property, value="") => {
-    this.setState({[property]: value});
+  setStateMatches = (matches=[]) => {
+    this.setState({matches: matches.slice().sort((a,b) => new Date(a.date_start) - new Date(b.date_start))})
+  }
+  setStateLoggedUser = (id="", name="", email="", joined_matches=[]) => {
+    this.setState({logged_user: {id, name, email, joined_matches}})
   }
   // fetch anything function
-  fetch_data = (method, params) => {
-    
+  onEndPointFetch = (method, param="", data) => {
+    return fetch(`http://localhost:4000${param}`, {
+      method: method,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .catch(console.log);
   }
 
   render(){
     return (
       <div>
-        <Header logged_user={this.state.logged_user} setStateProperty={this.setStateProperty}/>
+        <Header logged_user={this.state.logged_user} setStateLoggedUser={this.setStateLoggedUser}/>
         <Switch>
           <Route exact path="/">
             <Home matches={this.state.matches} logged_user={this.state.logged_user}  setStateProperty={this.setStateProperty} />
@@ -53,7 +59,7 @@ class  App extends React.Component {
             <MatchDetailed matches={this.state.matches}/>
           </Route>
           <Route path="/creatematch">
-            <CreateMatch/>
+            <CreateMatch matches={this.state.matches} onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>
           </Route>
           <Route path="/updatematch/:id">
             <UpdateMatch/>
