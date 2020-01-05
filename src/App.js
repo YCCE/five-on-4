@@ -18,7 +18,7 @@ class  App extends React.Component {
         id: 1,
         name: "karlo",
         email: "karlo@gmail.com",
-        joined_matches: [1, 2, 4, 5, 8, 9, 10, 11],
+        joined_matches: [],
       }
     }
   }
@@ -30,8 +30,13 @@ class  App extends React.Component {
   setStateMatches = (matches=[]) => {
     this.setState({matches: matches.slice().sort((a,b) => new Date(a.date_start) - new Date(b.date_start))})
   }
+  // set logged player
   setStateLoggedUser = (id="", name="", email="", joined_matches=[]) => {
     this.setState({logged_user: {id, name, email, joined_matches}})
+  }
+  // set state logged player's joined games
+  onSetStatePlayerMatches = (matches_array) => {
+    this.setState({logged_user: Object.assign({}, this.state.logged_user, {joined_matches: matches_array})})
   }
   // fetch anything function
   onEndPointFetch = (method, param="", data) => {
@@ -44,7 +49,9 @@ class  App extends React.Component {
     .catch(console.log);
   }
 
+
   render(){
+    console.log(this.state.logged_user);
     return (
       <div>
         <Header logged_user={this.state.logged_user} setStateLoggedUser={this.setStateLoggedUser}/>
@@ -62,10 +69,14 @@ class  App extends React.Component {
             <CreateMatch matches={this.state.matches} onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>
           </Route>
           <Route path="/updatematch/:id">
-            <UpdateMatch/>
+            <UpdateMatch onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>
           </Route>
           <Route path="/login">
-            <Login setStateProperty={this.setStateProperty}/>
+            <Login 
+            setStateLoggedUser={this.setStateLoggedUser} 
+            onEndPointFetch={this.onEndPointFetch}
+            onSetStatePlayerMatches={this.onSetStatePlayerMatches}
+            />
           </Route>
         </Switch>
 

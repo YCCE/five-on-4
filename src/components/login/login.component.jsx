@@ -1,51 +1,73 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 
 import "./login.styles.css";
-import { matches_static, matches_dynamic, users } from "../../assets/database";
+
 
 class Login extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            email: "",
-            password: "",
+            login: {
+                email: "",
+                password: "",
+            },
+            redirect: null,
+            message: null,
+            logged_id: null,
         }
     }
     onChangeHandler = (event) => {
-        this.setState({[event.target.name]: event.target.value})
+        this.setState({login: Object.assign({}, this.state.login, {[event.target.name]: event.target.value})})
     }
     onSubmitHandler = (event) => {
         event.preventDefault();
+        console.log(this.state.login);
+        this.props.onEndPointFetch("post", "/login", this.state.login)
+        .then(response => {
+            if(response.message === "user logged in successfully"){
 
-        const found_user = users.find(user => user.user_email === this.state.email && user.user_password === this.state.password);
+                this.props.setStateLoggedUser(response.data.id, response.data.name, response.data.email, response.data.joined_matches)
 
-        // this will be moved to the server, which will send this data to the front end as part of a response
+                // fetching and setting all joined matches for the user
+                this.props.onEndPointFetch("get", `/joinedmatches/${response.data.id}`)
+                .then(user_matches_response => {
+                    if(user_matches_response.message === "user matches fetched successfully"){
+                        this.props.onSetStatePlayerMatches(user_matches_response.data);
+                        this.setState({message: null, redirect: "/"})
+                    }
+                    else{
+                        this.setState({message: user_matches_response.message})
+                    }
+                })
+            }
+            else{
+                this.setState({message: response.message})
+            }
+        })
+        .catch(console.log);
+        // logic to populate user's matches
+        // no need for full matches?
 
-        if(found_user){
-            console.log("ok")
+        this.props.onEndPointFetch("get", `/joinedmatches/${this.state.logged_id}`)
+        .then(console.log);
+    } 
 
-            const joined_matches = matches_dynamic.filter(match => match.users_signed_up.some(user => user === found_user.user_id))
-            .map(match => match.match_id)
-
-            this.props.setStateProperty("logged_user", {id: found_user.user_id, name: found_user.user_name, email: found_user.user_email, joined_matches: joined_matches})
-        } else {
-            console.log("no");
-        }
-    }
-
-    
     render(){
         return(
             <div className="login">
                 <form name="form" onSubmit={this.onSubmitHandler}>
                     <label htmlFor="email">Email</label>
-                    <input required id="email" name="email" type="email" value={this.state.email} onChange={this.onChangeHandler}/>
+                    <input required id="email" name="email" type="email" value={this.state.login.email} onChange={this.onChangeHandler}/>
 
                     <label htmlFor="password">Password</label>
-                    <input required id="password" name="password" type="password" value={this.state.password} onChange={this.onChangeHandler}/>
+                    <input required id="password" name="password" type="password" value={this.state.login.password} onChange={this.onChangeHandler}/>
 
                     <input type="submit" value="Login"/>
                 </form>
+
+                {this.state.message? <p>{this.state.message}</p>: null}
+                {this.state.redirect? <Redirect to={this.state.redirect}/>: null}
                 
             </div>
         )

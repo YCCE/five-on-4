@@ -25,7 +25,7 @@ const Matches = ({matches, logged_user, setStateProperty}) => {
                         new Date(match.date_start) > Date.now()
                     )
                 })
-                .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreview match={upcoming_match} logged_user={logged_user} setStateProperty={setStateProperty} /></li>)
+                .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreview match={upcoming_match} logged_user={logged_user} joined_matches={logged_user.joined_matches.map(match => match.match_id)} /></li>)
                 }
             </ul>
             <ul>
