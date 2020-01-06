@@ -15,9 +15,9 @@ class  App extends React.Component {
     this.state = {
       matches: [],
       logged_user: {
-        id: 1,
-        name: "karlo",
-        email: "karlo@gmail.com",
+        id: "",
+        name: "",
+        email: "",
         joined_matches: [],
       }
     }
@@ -57,13 +57,20 @@ class  App extends React.Component {
         <Header logged_user={this.state.logged_user} setStateLoggedUser={this.setStateLoggedUser}/>
         <Switch>
           <Route exact path="/">
-            <Home matches={this.state.matches} logged_user={this.state.logged_user}  setStateProperty={this.setStateProperty} />
+            <Home matches={this.state.matches} logged_user={this.state.logged_user}  setStateMatches={this.setStateMatches} onEndPointFetch={this.onEndPointFetch} onSetStatePlayerMatches={this.onSetStatePlayerMatches}/>
           </Route>
           <Route path="/matches">
-            <Matches matches={this.state.matches} logged_user={this.state.logged_user} setStateProperty={this.setStateProperty} />
+            <Matches matches={this.state.matches} logged_user={this.state.logged_user} setStateMatches={this.setStateMatches} onEndPointFetch={this.onEndPointFetch} onSetStatePlayerMatches={this.onSetStatePlayerMatches}/>
           </Route>
            <Route path="/match/:id">
-            <MatchDetailed matches={this.state.matches}/>
+            <MatchDetailed 
+            matches={this.state.matches}
+            logged_user={this.state.logged_user} 
+            joined_matches={this.state.logged_user.joined_matches.map(match => match.match_id)}
+            setStateMatches={this.setStateMatches} 
+            onEndPointFetch={this.onEndPointFetch} 
+            onSetStatePlayerMatches={this.onSetStatePlayerMatches}
+            />
           </Route>
           <Route path="/creatematch">
             <CreateMatch matches={this.state.matches} onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>

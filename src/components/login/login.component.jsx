@@ -23,13 +23,14 @@ class Login extends React.Component {
     onSubmitHandler = (event) => {
         event.preventDefault();
         console.log(this.state.login);
+        // fetching user login info
         this.props.onEndPointFetch("post", "/login", this.state.login)
         .then(response => {
             if(response.message === "user logged in successfully"){
-
+                // setting state in app.js of currently logged user 
                 this.props.setStateLoggedUser(response.data.id, response.data.name, response.data.email, response.data.joined_matches)
 
-                // fetching and setting all joined matches for the user
+                // fetching and setting state in app.js of all joined matches for the logged user
                 this.props.onEndPointFetch("get", `/joinedmatches/${response.data.id}`)
                 .then(user_matches_response => {
                     if(user_matches_response.message === "user matches fetched successfully"){

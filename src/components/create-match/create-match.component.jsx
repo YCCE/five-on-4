@@ -26,6 +26,7 @@ class CreateMatch extends React.Component {
             message: null,
         }   
     }
+
     onChangeHandler = (event) => {
         this.setState({match: Object.assign({}, this.state.match, {[event.target.name]: event.target.value})})
     }

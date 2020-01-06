@@ -24,6 +24,8 @@ class UpdateMatch extends React.Component {
             },
             redirect: null,
             message: null,
+            // just test here
+            name: {name: "karlo"}
         }   
     }
     componentDidMount(){
@@ -38,6 +40,17 @@ class UpdateMatch extends React.Component {
                 this.setState({message: "There were issues with fetching the match. Please try again."})
             }
         })
+        .catch(console.log);
+
+/*         fetch("http://localhost:4000/something", {
+            method: "put",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(1),
+        }).then(response => response.json()).then(console.log); */
+
+
+        this.props.onEndPointFetch("put", `/updatematch/${4}`, this.state.name)
+        .then(response => console.log("tu", response))
         .catch(console.log);
     }
     onChangeHandler = (event) => {

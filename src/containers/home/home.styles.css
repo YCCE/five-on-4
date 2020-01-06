@@ -1,0 +1,4 @@
+.home-matches {
+    display: flex;
+    justify-content: space-between;
+}
