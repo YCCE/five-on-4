@@ -1,125 +1,135 @@
 import React from "react";
-import { useParams, useHistory, Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import "./match-detailed.styles.css";
 
-// all of this code is wet and will be replaced by a component
-// function to render join or cancel match button if a user is logged in - likely to be a separate component in future
-const renderSignupButton = (joined_matches, onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches) => {
-    if(joined_matches.some(joined_match => joined_match === match.match_id)){
-        return <input onClick={() => cancelArrival(onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches)} type="button" value="Cancel attendance" />
+import JoinMatchButton from "../join-match-button/join-match-button.component";
+import UnjoinMatchButton from "../unjoin-match-button/unjoin-match-button.component";
+
+class MatchDetailed extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            match: {
+                match_id: "",
+                match_name: "",
+                date_start: "",
+                date_end: "",
+                venue: "",
+                users_signed_up: [],
+                users_attended: [],
+                home_score: "0",
+                away_score: "0",
+                home_scorers: [],
+                away_scorers: [],
+                home_team: [],
+                away_team: [],
+            },
+            match_weather: {
+                temperature: "",
+                summary: "",
+                windSpeed: "",
+            },
+            message: null,
+        };
     }
-    else{
-        // this callback function for join the match does not look right, need to see if this can be fixed in separate component
-        return <input onClick={() => joinTheMatch(onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches)} type="button" value="Join the match" />
+    // fetching match and fetching weather with timeout after match stsate was set
+    componentDidMount(){
+        // fetch with help of id
+        const {id} = this.props.match.params;
+        this.props.onEndPointFetch("get", `/match/${id}`)
+        .then(response => {
+            if(response.message === "match found"){
+                // fetching wather data, that will eventually be passed as a prop to a weather component
+                this.props.onEndPointFetch("get", `/getweather/${String(Math.round(new Date(response.data.date_start).getTime()/1000))}`)
+                .then(weather_response => {
+                  this.setState({match_weather: weather_response, match: response.data});
+                })
+                .catch(console.log);
+            } 
+            else{
+                this.setState({message: "There were issues with fetching the match. Please try again."})
+            }
+        })
+        .catch(console.log);
     }
-}
-// functionality to have user join the match - will be separate component
-// it actually just adds the user's id to the user's signedup array for the particular match
-// and then refetches array with user's matches to populate app.js state
-const joinTheMatch = (onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches) => {
-    console.log("Joined the match!");
-    // calling the fetch matches endpoint to have the player join the match
-    console.log(match.match_id);
-    console.log("loggeduser id", logged_user.id);
-
-    onEndPointFetch("put", `/joinmatch/${match.match_id}`, {user_id: logged_user.id})
-    // need to set matches state in the app.js
-    .then(response => {
-        console.log("response from put.joinmatch", response);
-        if(response.message === "the match joined successfully"){
-            // if we joined the match successfully
-            // we set matches state in app.js
-            setStateMatches(response.data);
-            console.log("response.data", response.data)
-            console.log("logged user id", logged_user);
-            // and we fetch all joined matches
-            onEndPointFetch("get", `/joinedmatches/${logged_user.id}`)
-            // then we set the state of joined matches if all good
-            // note that this same code appears in login component. could it be extracted as a component?
-            .then(user_matches_response => {
-                console.log("length of joined matches", user_matches_response)
-                if(user_matches_response.message === "user matches fetched successfully"){
-                    onSetStatePlayerMatches(user_matches_response.data);
-                }
-                else{
-                    // nothing to really do here if joined matches are not returned
-                    // could return user to login, or give some 404
-                    // or have some global error message to be rendered on the page, or just redirected to
-                    console.log(user_matches_response.message);
-                }
-            })
-            .catch(console.log);
+    // function for setting message state for info to user
+    setStateMessageDetailed = (message) => {
+        this.setState({message: message});
+    }
+    // function for setting match state for other components
+    setStateMatchDetailed = (match) => {
+        this.setState({match: match});
+    }
+    // function to render appropriate button to join, unjoin match or login to do so
+    renderMatchAction = () => {
+        const {name, joined_matches} = this.props.logged_user;
+        const { id } = this.props.match.params;
+        // if logged user and not joined match yet, show join button
+        if(name && !joined_matches.some(joined_match => Number(joined_match.match_id) === Number(id))){
+            console.log("join the match");
+            return <JoinMatchButton
+                    onEndPointFetch={this.props.onEndPointFetch}
+                    match_id={id}
+                    setStateMatches={this.props.setStateMatches}
+                    setStateMessageDetailed={this.setStateMessageDetailed}
+                    user_id={this.props.logged_user.id}
+                    onSetStatePlayerMatches={this.props.onSetStatePlayerMatches}
+                    setStateMatchDetailed={this.setStateMatchDetailed}
+                    detailed_match
+                    />
         }
+        // if logged user and joined match, show unjoin button
+        else if(name && joined_matches.some(joined_match => Number(joined_match.match_id) === Number(id))){
+            console.log("unjoin the match");
+            return <UnjoinMatchButton
+                    onEndPointFetch={this.props.onEndPointFetch}
+                    match_id={id}
+                    setStateMatches={this.props.setStateMatches}
+                    setStateMessageDetailed={this.setStateMessageDetailed}
+                    user_id={this.props.logged_user.id}
+                    onSetStatePlayerMatches={this.props.onSetStatePlayerMatches}
+                    setStateMatchDetailed={this.setStateMatchDetailed}
+                    detailed_match
+                    />
+        }
+        // else, show login to join match button
         else{
-            console.log(response.message);
+            console.log("login to join the match")
+            return <Link to="/login">Login to join the match</Link>
         }
-    })
-    .catch(console.log);
-}
-// function to remove the player from the match
-// same idea applies as with the join the match functionality
-// and code is pretty much the same
-const cancelArrival = (onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches) => {
-    console.log("Arrival cancelled!");
+    }
 
-    // calling the fetch matches endpoint to have the player unjoin the match
-    onEndPointFetch("delete", `/unjoinmatch/${match.match_id}`, {user_id: logged_user.id})
-    // need to set matches state in the app.js
-    .then(response => {
-        if(response.message === "the match unjoined successfully"){
-            // if we unjoined the match successfully
-            // we set matches state in app.js
-            setStateMatches(response.data);
-            // and we fetch all joined matches
-            onEndPointFetch("get", `/joinedmatches/${logged_user.id}`)
-            // then we set the state of joined matches if all good
-            // note that this same code appears in login component. could it be extracted as a component?
-            .then(user_matches_response => {
-                if(user_matches_response.message === "user matches fetched successfully"){
-                    onSetStatePlayerMatches(user_matches_response.data);
-                }
-                else{
-                    // nothing to really do here if joined matches are not returned
-                    // could return user to login, or give some 404
-                    // or have some global error message to be rendered on the page, or just redirected to
-                    console.log(user_matches_response.message);
-                }
-            })
-            .catch(console.log);
-        }
-        else{
-            console.log(response.message);
-        }
-    })
-    .catch(console.log);
+    render(){
+        console.log(this.state.match_weather);
+        const {goBack} = this.props.history;
+        return (
+            <div>
+
+                <p onClick={goBack}> Go Back</p>
+                {/* this will be a separate function component to provide detailed info about the match */}
+                <h3>Match Detailed Component</h3>
+                <h4>{this.state.match.match_name}</h4>
+                <h4>{this.state.match.match_id}</h4>
+                <h4>{this.state.match.date_start}</h4>
+                <p>Joined players: {this.state.match.users_signed_up.length}</p>
+                <p>Players:{this.state.match.users_signed_up}</p>
+                <h4>Weather on the Day</h4>
+                <h5>Summary: {this.state.match_weather.summary}</h5>
+                <h5>Temperature: {this.state.match_weather.temperature}</h5>
+                <h5>Wind Speed: {this.state.match_weather.windSpeed}</h5>
+                <Link to={`/updatematch/${this.state.match.match_id}`}>
+                    <input type="button" value="Edit"/>
+                </Link>
+
+                {/* render join buttons only for upcoming matches */}
+                {new Date(this.state.match.date_start) > Date.now()? this.renderMatchAction(): null}
+
+                {/* palceholder for message in case of error */}
+                {this.state.message? <p>{this.state.message}</p>: null}
+            </div>
+        )
+    }    
 }
 
-const MatchDetailed = ({matches, joined_matches, onEndPointFetch, logged_user, setStateMatches, onSetStatePlayerMatches}) => {
-    const { id } = useParams();
-    const { goBack } = useHistory();
-    const match = matches.find(match => Number(match.match_id) === Number(id))
-    console.log(match);
-    
-
-    if(!matches.length) return null;
-    
-    return (
-        <div>
-            <p onClick={goBack}> Go Back</p>
-            <h3>Match Detailed Component</h3>
-            <h4>{match.match_name}</h4>
-            <h4>{match.match_id}</h4>
-            <Link to={`/updatematch/${match.match_id}`}>
-                <input type="button" value="Edit"/>
-            </Link>
-
-            {/* AGAIN, all of this code is just wet, and will be replaced by a component */}
-
-            {joined_matches && logged_user.name? renderSignupButton(joined_matches, onEndPointFetch, match, logged_user, setStateMatches, onSetStatePlayerMatches): <Link to="/login"><input type="button" value="Login to join the match" /></Link>}
-        </div>
-    )
-
-}
-
-export default MatchDetailed;
+export default withRouter(MatchDetailed);

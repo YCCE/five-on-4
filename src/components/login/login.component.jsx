@@ -50,8 +50,8 @@ class Login extends React.Component {
         // logic to populate user's matches
         // no need for full matches?
 
-        this.props.onEndPointFetch("get", `/joinedmatches/${this.state.logged_id}`)
-        .then(console.log);
+/*         this.props.onEndPointFetch("get", `/joinedmatches/${this.state.logged_id}`)
+        .then(console.log); */
     } 
 
     render(){
