@@ -53,7 +53,8 @@ class  App extends React.Component {
   }
   // fetch anything function
   onEndPointFetch = (method, param="", data) => {
-    return fetch(`http://localhost:4000${param}`, {
+/*     return fetch(`http://localhost:4000${param}`, { */
+    return fetch(`https://immense-inlet-39261.herokuapp.com${param}`, {
       method: method,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(data)
