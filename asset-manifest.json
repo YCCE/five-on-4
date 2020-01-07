@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/ikaem/five-on-4.git/static/css/main.2c734726.chunk.css",
-    "main.js": "/ikaem/five-on-4.git/static/js/main.8b1cbd5c.chunk.js",
-    "main.js.map": "/ikaem/five-on-4.git/static/js/main.8b1cbd5c.chunk.js.map",
-    "runtime-main.js": "/ikaem/five-on-4.git/static/js/runtime-main.fa31c2ad.js",
-    "runtime-main.js.map": "/ikaem/five-on-4.git/static/js/runtime-main.fa31c2ad.js.map",
-    "static/js/2.f490e34b.chunk.js": "/ikaem/five-on-4.git/static/js/2.f490e34b.chunk.js",
-    "static/js/2.f490e34b.chunk.js.map": "/ikaem/five-on-4.git/static/js/2.f490e34b.chunk.js.map",
-    "index.html": "/ikaem/five-on-4.git/index.html",
-    "precache-manifest.41acde820c3c5eb02caae24ce093590d.js": "/ikaem/five-on-4.git/precache-manifest.41acde820c3c5eb02caae24ce093590d.js",
-    "service-worker.js": "/ikaem/five-on-4.git/service-worker.js",
-    "static/css/main.2c734726.chunk.css.map": "/ikaem/five-on-4.git/static/css/main.2c734726.chunk.css.map",
-    "static/js/2.f490e34b.chunk.js.LICENSE": "/ikaem/five-on-4.git/static/js/2.f490e34b.chunk.js.LICENSE"
+    "main.css": "/ikaem/five-on-4-demo.git/static/css/main.2c734726.chunk.css",
+    "main.js": "/ikaem/five-on-4-demo.git/static/js/main.8b1cbd5c.chunk.js",
+    "main.js.map": "/ikaem/five-on-4-demo.git/static/js/main.8b1cbd5c.chunk.js.map",
+    "runtime-main.js": "/ikaem/five-on-4-demo.git/static/js/runtime-main.ef5e355c.js",
+    "runtime-main.js.map": "/ikaem/five-on-4-demo.git/static/js/runtime-main.ef5e355c.js.map",
+    "static/js/2.f490e34b.chunk.js": "/ikaem/five-on-4-demo.git/static/js/2.f490e34b.chunk.js",
+    "static/js/2.f490e34b.chunk.js.map": "/ikaem/five-on-4-demo.git/static/js/2.f490e34b.chunk.js.map",
+    "index.html": "/ikaem/five-on-4-demo.git/index.html",
+    "precache-manifest.06207e91e012074ee124afae9f4f0b57.js": "/ikaem/five-on-4-demo.git/precache-manifest.06207e91e012074ee124afae9f4f0b57.js",
+    "service-worker.js": "/ikaem/five-on-4-demo.git/service-worker.js",
+    "static/css/main.2c734726.chunk.css.map": "/ikaem/five-on-4-demo.git/static/css/main.2c734726.chunk.css.map",
+    "static/js/2.f490e34b.chunk.js.LICENSE": "/ikaem/five-on-4-demo.git/static/js/2.f490e34b.chunk.js.LICENSE"
   },
   "entrypoints": [
-    "static/js/runtime-main.fa31c2ad.js",
+    "static/js/runtime-main.ef5e355c.js",
     "static/js/2.f490e34b.chunk.js",
     "static/css/main.2c734726.chunk.css",
     "static/js/main.8b1cbd5c.chunk.js"
