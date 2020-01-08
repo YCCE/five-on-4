@@ -1,20 +1,20 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-import "./login.styles.css";
+import "./register.styles.css";
 
 
-class Login extends React.Component {
+class Register extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             login: {
+                name: "",
                 email: "",
                 password: "",
             },
             redirect: null,
             message: null,
-            logged_id: null,
         }
     }
     onLoginChangeHandler = (event) => {
@@ -22,27 +22,17 @@ class Login extends React.Component {
     }
     onSubmitHandler = (event) => {
         event.preventDefault();
-        console.log(this.state.login);
-        // fetching user login info
-        this.props.onEndPointFetch("post", "/login", this.state.login)
+        // accessing register endpoint
+        this.props.onEndPointFetch("post", "/register", this.state.login)
         .then(response => {
-            if(response.message === "user logged in successfully"){
+            if(response.message === "user registered successfully"){
                 // setting state in app.js of currently logged user 
-                this.props.setStateLoggedUser(response.data.id, response.data.name, response.data.email, response.data.joined_matches)
-
-                // fetching and setting state in app.js of all joined matches for the logged user
-                this.props.onEndPointFetch("get", `/joinedmatches/${response.data.id}`)
-                .then(user_matches_response => {
-                    if(user_matches_response.message === "user matches fetched successfully"){
-                        this.props.onSetStatePlayerMatches(user_matches_response.data);
-                        this.setState({message: null, redirect: "/"})
-                    }
-                    else{
-                        this.setState({message: user_matches_response.message})
-                    }
-                })
+                console.log(response);
+                this.props.setStateLoggedUser(response.data.user_id, response.data.user_name, response.data.user_email, response.data.joined_matches);
+                this.setState({redirect: "/"})
             }
             else{
+                console.log(response);
                 this.setState({message: response.message})
             }
         })
@@ -51,15 +41,18 @@ class Login extends React.Component {
 
     render(){
         return(
-            <div className="login">
+            <div className="register">
                 <form name="form" onSubmit={this.onSubmitHandler}>
+                    <label htmlFor="name">Name</label>
+                    <input required id="name" name="name" type="name" value={this.state.login.name} onChange={this.onLoginChangeHandler}/>
+
                     <label htmlFor="email">Email</label>
                     <input required id="email" name="email" type="email" value={this.state.login.email} onChange={this.onLoginChangeHandler}/>
 
                     <label htmlFor="password">Password</label>
                     <input required id="password" name="password" type="password" value={this.state.login.password} onChange={this.onLoginChangeHandler}/>
 
-                    <input type="submit" value="Login"/>
+                    <input type="submit" value="Register"/>
                 </form>
 
                 {this.state.message? <p>{this.state.message}</p>: null}
@@ -70,4 +63,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default Register;

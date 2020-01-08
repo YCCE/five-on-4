@@ -8,6 +8,8 @@ import MatchDetailed from "./components/match-detailed/match-detailed.component"
 import CreateMatch from "./components/create-match/create-match.component";
 import UpdateMatch from "./components/update-match/update-match.component";
 import Login from "./components/login/login.component";
+import Register from "./components/register/register.component";
+import UserProfile from './components/user-profile/user-profile.component';
 
 class  App extends React.Component {
   constructor(props){
@@ -21,7 +23,7 @@ class  App extends React.Component {
         joined_matches: [],
       },
       home_weather: {},
-      match_weather: {},
+      message: "",
     }
   }
   componentDidMount(){
@@ -31,7 +33,13 @@ class  App extends React.Component {
     // fetching weather data for home component - weather today
     this.onEndPointFetch("get", `/getweather/${String(Math.round(new Date().getTime()/1000))}`)
     .then(response => {
-      this.setState({home_weather: response})
+      if(response.message === "weather fetched successfully"){
+        this.setState({home_weather: response.data})
+      }
+      else{
+        console.log("There was an error fetching weather data")
+        this.setState({message: "There was an error fetching weather data"})
+      }
     })
     .catch(console.log);
   }
@@ -53,8 +61,8 @@ class  App extends React.Component {
   }
   // fetch anything function
   onEndPointFetch = (method, param="", data) => {
-/*     return fetch(`http://localhost:4000${param}`, { */
-    return fetch(`https://immense-inlet-39261.herokuapp.com${param}`, {
+    return fetch(`http://localhost:4000${param}`, {
+/*     return fetch(`https://immense-inlet-39261.herokuapp.com${param}`, { */
       method: method,
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(data)
@@ -86,7 +94,6 @@ class  App extends React.Component {
             setStateMatches={this.setStateMatches} 
             onEndPointFetch={this.onEndPointFetch} 
             onSetStatePlayerMatches={this.onSetStatePlayerMatches}
-            weather={this.state.match_weather.currently}
             onSetStateMatchWeather={this.onSetStateMatchWeather}
             />
           </Route>
@@ -102,6 +109,15 @@ class  App extends React.Component {
             onEndPointFetch={this.onEndPointFetch}
             onSetStatePlayerMatches={this.onSetStatePlayerMatches}
             />
+          </Route>
+          <Route path="/register">
+            <Register 
+            setStateLoggedUser={this.setStateLoggedUser} 
+            onEndPointFetch={this.onEndPointFetch}
+            />
+          </Route>
+          <Route path="/profile">
+            <UserProfile />
           </Route>
         </Switch>
 

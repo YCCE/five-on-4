@@ -14,7 +14,9 @@ const Header = ({logged_user, setStateLoggedUser}) => (
             <ul className="navigation-section">
                 {logged_user.name? 
                     (<>
-                        <li>Hello, {logged_user.name.charAt(0).toUpperCase()+logged_user.name.slice(1)}. Signed up matches: {logged_user.joined_matches.length}</li>
+                        <li>Hello,  
+                        <Link to="/profile"> {logged_user.name.charAt(0).toUpperCase()+logged_user.name.slice(1)}</Link>
+                        ! Signed up matches: {logged_user.joined_matches.length}</li>
                         <li onClick={setStateLoggedUser}>Logout</li>
                     </>):
                     (<>

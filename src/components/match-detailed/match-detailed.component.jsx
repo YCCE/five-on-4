@@ -43,7 +43,13 @@ class MatchDetailed extends React.Component {
                 // fetching wather data, that will eventually be passed as a prop to a weather component
                 this.props.onEndPointFetch("get", `/getweather/${String(Math.round(new Date(response.data.date_start).getTime()/1000))}`)
                 .then(weather_response => {
-                  this.setState({match_weather: weather_response, match: response.data});
+                    if(weather_response.message === "weather fetched successfully"){
+                        this.setState({match_weather: weather_response.data, match: response.data});
+                    }
+                    else{
+                        // console.log("There was an error fetching weather data")
+                        this.setState({message: "There was an issue fetching weather", match: response.data});
+                    }
                 })
                 .catch(console.log);
             } 
