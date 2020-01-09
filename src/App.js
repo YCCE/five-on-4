@@ -117,7 +117,9 @@ class  App extends React.Component {
             />
           </Route>
           <Route path="/profile">
-            <UserProfile />
+            <UserProfile 
+              logged_user={this.state.logged_user}
+            />
           </Route>
         </Switch>
 
