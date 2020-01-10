@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Header from "./components/header/header.component";
 import Home from "./containers/home/home.container";
 import Matches from "./containers/matches/matches.container";
-import MatchDetailed from "./components/match-detailed/match-detailed.component";
+import MatchDetailed from "./containers/match-detailed/match-detailed.container";
 import CreateMatch from "./components/create-match/create-match.component";
 import UpdateMatch from "./components/update-match/update-match.component";
 import Login from "./components/login/login.component";
@@ -15,7 +15,7 @@ class  App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      matches: [],
+      preview_matches: [],
       logged_user: {
         id: "",
         name: "",
@@ -27,9 +27,16 @@ class  App extends React.Component {
     }
   }
   componentDidMount(){
+
     this.onEndPointFetch("get")
-    .then(matches => this.setStateMatches(matches))
+    .then(preview_matches_response => {
+      if(preview_matches_response.message === "preview matches retrieved successfully"){
+        this.setState({preview_matches: preview_matches_response.data})
+      }
+      // else probably redirect to some error page with some explanation that no matches were fetched
+    })
     .catch(console.log);
+
     // fetching weather data for home component - weather today
     this.onEndPointFetch("get", `/getweather/${String(Math.round(new Date().getTime()/1000))}`)
     .then(response => {
@@ -43,6 +50,7 @@ class  App extends React.Component {
     })
     .catch(console.log);
   }
+
   // setting state data from the app
   setStateMatches = (matches=[]) => {
     this.setState({matches: matches.slice().sort((a,b) => new Date(a.date_start) - new Date(b.date_start))})
@@ -73,28 +81,37 @@ class  App extends React.Component {
 
 
   render(){
-    console.log(this.state.home_weather);
+    console.log("main state:", this.state);
     return (
       <div>
         <Header logged_user={this.state.logged_user} setStateLoggedUser={this.setStateLoggedUser}/>
         <Switch>
           <Route exact path="/">
-            <Home matches={this.state.matches} logged_user={this.state.logged_user}  setStateMatches={this.setStateMatches} onEndPointFetch={this.onEndPointFetch} onSetStatePlayerMatches={this.onSetStatePlayerMatches}
-            weather={this.state.home_weather}
+            <Home 
+              preview_matches={this.state.preview_matches} 
+              logged_user={this.state.logged_user}  
+              setStateMatches={this.setStateMatches} 
+              onEndPointFetch={this.onEndPointFetch} 
+              onSetStatePlayerMatches={this.onSetStatePlayerMatches}
+              weather={this.state.home_weather}
             />
           </Route>
           <Route path="/matches">
-            <Matches matches={this.state.matches} logged_user={this.state.logged_user} setStateMatches={this.setStateMatches} onEndPointFetch={this.onEndPointFetch} onSetStatePlayerMatches={this.onSetStatePlayerMatches}/>
+            <Matches 
+              preview_matches={this.state.preview_matches} 
+              logged_user={this.state.logged_user}  
+              setStateMatches={this.setStateMatches} 
+              onEndPointFetch={this.onEndPointFetch} 
+              onSetStatePlayerMatches={this.onSetStatePlayerMatches}
+            />
           </Route>
            <Route path="/match/:id">
             <MatchDetailed 
-            matches={this.state.matches}
-            logged_user={this.state.logged_user} 
-            joined_matches={this.state.logged_user.joined_matches.map(match => match.match_id)}
-            setStateMatches={this.setStateMatches} 
-            onEndPointFetch={this.onEndPointFetch} 
-            onSetStatePlayerMatches={this.onSetStatePlayerMatches}
-            onSetStateMatchWeather={this.onSetStateMatchWeather}
+              onEndPointFetch={this.onEndPointFetch} 
+              setStateMatches={this.setStateMatches} 
+              user_id={this.state.logged_user.id} 
+              onSetStatePlayerMatches={this.onSetStatePlayerMatches}
+              joined_matches={this.state.logged_user.joined_matches}
             />
           </Route>
           <Route path="/creatematch">
