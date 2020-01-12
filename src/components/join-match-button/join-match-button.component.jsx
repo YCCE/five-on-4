@@ -3,13 +3,13 @@ import React from "react";
 import "./join-match-button.styles.css";
 
 const JoinMatchButton = (props) => {
-    const {onEndPointFetch, match_id, setStateMatches, setStateMessageDetailed, user_id, onSetStatePlayerMatches, setStateMatchDetailed, detailed_match} = props;
+    const {onEndPointFetch, match_id, setStateMatches, setStateMessageDetailed, user_id, user_name, onSetStatePlayerMatches, setStateMatchDetailed, detailed_match} = props;
     
     const onJoinMatch = () => {
         console.log("Joined the match! Not yet though...")
         // we need to access endpoint for joining the match
         // so, access the endpoint and get response back
-        onEndPointFetch("put", `/joinmatch/${match_id}`, {user_id: user_id})
+        onEndPointFetch("put", `/joinmatch/${match_id}`, {user_name: user_name})
         // set the state of all matches with the response from the endpoint
         .then(response => {
             if(response.message === "the match joined successfully"){

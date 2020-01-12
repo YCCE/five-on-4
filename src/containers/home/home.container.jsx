@@ -49,6 +49,7 @@ const Home = ({preview_matches, logged_user, setStateMatches, onSetStatePlayerMa
                             match_venue={upcoming_match.match_venue}
                             match_players_signed_up={upcoming_match.match_players_signed_up}
                             user_id={logged_user.id} 
+                            user_name={logged_user.name}
                             // joined matches should be a simple array of numbers only
                             joined_matches={logged_user.joined_matches} 
                             setStateMatches={setStateMatches}

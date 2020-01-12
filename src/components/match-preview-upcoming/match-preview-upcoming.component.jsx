@@ -6,7 +6,7 @@ import "./match-preview-upcoming.styles.css";
 import JoinMatchButton from "../join-match-button/join-match-button.component";
 import UnjoinMatchButton from "../unjoin-match-button/unjoin-match-button.component";
 
-const MatchPreviewUpcoming = ({match_id, match_name, match_date_start, match_date_end, match_venue, match_players_signed_up, user_id, joined_matches, setStateMatches, onSetStatePlayerMatches, onEndPointFetch}) => {
+const MatchPreviewUpcoming = ({match_id, match_name, match_date_start, match_date_end, match_venue, match_players_signed_up, user_id, user_name, joined_matches, setStateMatches, onSetStatePlayerMatches, onEndPointFetch}) => {
 
     // this should probably be a function because it repeats in match detailed too
     const renderMatchAction = () => {
@@ -16,6 +16,7 @@ const MatchPreviewUpcoming = ({match_id, match_name, match_date_start, match_dat
                         match_id={match_id}
                         setStateMatches={setStateMatches}
                         user_id={user_id}
+                        user_name={user_name}
                         onSetStatePlayerMatches={onSetStatePlayerMatches}
                     />
         }
@@ -25,6 +26,7 @@ const MatchPreviewUpcoming = ({match_id, match_name, match_date_start, match_dat
                         match_id={match_id}
                         setStateMatches={setStateMatches}
                         user_id={user_id}
+                        user_name={user_name}
                         onSetStatePlayerMatches={onSetStatePlayerMatches}
                     />
         }
