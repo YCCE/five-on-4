@@ -11,16 +11,19 @@ import Login from "./components/login/login.component";
 import Register from "./components/register/register.component";
 import UserProfile from './components/user-profile/user-profile.component';
 
+// test only
+import ReportMatch from "./components/report-match/report-match.component";
+
 class  App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       preview_matches: [],
       logged_user: {
-        id: "",
-        name: "",
-        email: "",
-        joined_matches: [],
+        user_id: "",
+        user_name: "",
+        user_email: "",
+        user_signed_up_matches: [],
       },
       home_weather: {},
       message: "",
@@ -53,19 +56,24 @@ class  App extends React.Component {
 
   // setting state data from the app
   setStateMatches = (matches=[]) => {
-    this.setState({matches: matches.slice().sort((a,b) => new Date(a.date_start) - new Date(b.date_start))})
+    this.setState({preview_matches: matches})
+    console.log(this.state.preview_matches);
   }
   // set logged player
-  setStateLoggedUser = (id="", name="", email="", joined_matches=[]) => {
-    this.setState({logged_user: {id, name, email, joined_matches}})
+  setStateLoggedUser = (user={user_id:"", user_name:"", user_email:"", user_signed_up_matches:[]}) => {
+    this.setState({logged_user: user})
   }
   // set state logged player's joined games
   onSetStatePlayerMatches = (matches_array) => {
-    this.setState({logged_user: Object.assign({}, this.state.logged_user, {joined_matches: matches_array})})
+    this.setState({logged_user: Object.assign({}, this.state.logged_user, {user_signed_up_matches: matches_array})})
   }
   // fetch match weather state
   onSetStateMatchWeather = (weather_object) => {
     this.setState({match_weather: weather_object});
+  }
+  // set global message state
+  onSetStateGlobalMessage = (message) => {
+    this.setState({message: message});
   }
   // fetch anything function
   onEndPointFetch = (method, param="", data) => {
@@ -84,12 +92,15 @@ class  App extends React.Component {
     console.log("main state:", this.state);
     return (
       <div>
-        <Header logged_user={this.state.logged_user} setStateLoggedUser={this.setStateLoggedUser}/>
+        <Header user_name={this.state.logged_user.user_name} user_signed_up_matches={this.state.logged_user.user_signed_up_matches}/>
+        <p>{this.state.message? this.state.message: ""}</p>
         <Switch>
           <Route exact path="/">
             <Home 
               preview_matches={this.state.preview_matches} 
-              logged_user={this.state.logged_user}  
+              user_id={this.state.logged_user.user_id}  
+              user_name={this.state.logged_user.user_name} 
+              user_signed_up_matches={this.state.logged_user.user_signed_up_matches} 
               setStateMatches={this.setStateMatches} 
               onEndPointFetch={this.onEndPointFetch} 
               onSetStatePlayerMatches={this.onSetStatePlayerMatches}
@@ -99,7 +110,9 @@ class  App extends React.Component {
           <Route path="/matches">
             <Matches 
               preview_matches={this.state.preview_matches} 
-              logged_user={this.state.logged_user}  
+              user_id={this.state.logged_user.user_id}  
+              user_name={this.state.logged_user.user_name} 
+              user_signed_up_matches={this.state.logged_user.user_signed_up_matches}
               setStateMatches={this.setStateMatches} 
               onEndPointFetch={this.onEndPointFetch} 
               onSetStatePlayerMatches={this.onSetStatePlayerMatches}
@@ -109,16 +122,26 @@ class  App extends React.Component {
             <MatchDetailed 
               onEndPointFetch={this.onEndPointFetch} 
               setStateMatches={this.setStateMatches} 
-              user_id={this.state.logged_user.id} 
+              user_id={this.state.logged_user.user_id} 
+              user_name={this.state.logged_user.user_name}
+              user_signed_up_matches={this.state.logged_user.user_signed_up_matches}
               onSetStatePlayerMatches={this.onSetStatePlayerMatches}
-              joined_matches={this.state.logged_user.joined_matches}
+              onSetStateGlobalMessage={this.onSetStateGlobalMessage}
             />
           </Route>
           <Route path="/creatematch">
-            <CreateMatch matches={this.state.matches} onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>
+            <CreateMatch 
+              onEndPointFetch={this.onEndPointFetch} 
+              setStateMatches={this.setStateMatches}
+              onSetStateGlobalMessage={this.onSetStateGlobalMessage}
+            />
           </Route>
           <Route path="/updatematch/:id">
-            <UpdateMatch onEndPointFetch={this.onEndPointFetch} setStateMatches={this.setStateMatches}/>
+            <UpdateMatch 
+              onEndPointFetch={this.onEndPointFetch} 
+              setStateMatches={this.setStateMatches}
+              onSetStateGlobalMessage={this.onSetStateGlobalMessage}
+            />
           </Route>
           <Route path="/login">
             <Login 
@@ -137,6 +160,11 @@ class  App extends React.Component {
             <UserProfile 
               logged_user={this.state.logged_user}
             />
+          </Route>
+
+          {/* just test for now */}
+          <Route path="/reportmatch" >
+            <ReportMatch />
           </Route>
         </Switch>
 

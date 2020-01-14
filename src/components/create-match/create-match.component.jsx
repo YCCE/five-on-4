@@ -7,85 +7,67 @@ class CreateMatch extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            match: {
-                match_id: "",
+            create_match: {
                 match_name: "",
-                date_start: "",
-                date_end: "",
-                venue: "",
-                users_signed_up: [],
-                users_attended: [],
-                home_score: "0",
-                away_score: "0",
-                home_scorers: [],
-                away_scorers: [],
-                home_team: [],
-                away_team: [],
+                match_date_start: "",
+                match_date_end: "",
+                match_venue: "",
             },
             redirect: null,
-            message: null,
         }   
     }
-
     onChangeHandler = (event) => {
-        this.setState({match: Object.assign({}, this.state.match, {[event.target.name]: event.target.value})})
+        this.setState({create_match: Object.assign({}, this.state.create_match, {[event.target.name]: event.target.value})})
     }
     onSubmitHandler= (event) => {
         event.preventDefault();
         // fetch function
-        this.props.onEndPointFetch("post", "/creatematch", this.state.match)
-        .then(response => {
-            console.log(response);
-            if(response.message === "new match created successfully"){
-                this.props.setStateMatches(response.data)
-                this.setState({
-                match:{
-                    match_id: "",
-                    match_name: "",
-                    date_start: "",
-                    date_end: "",
-                    venue: "",
-                    users_signed_up: [],
-                    users_attended: [],
-                    home_score: "0",
-                    away_score: "0",
-                    home_scorers: [],
-                    away_scorers: [],
-                    home_team: [],
-                    away_team: [],},
-                message: null,
-                redirect: "/"});
+        this.props.onEndPointFetch("post", "/creatematch", this.state.create_match)
+        .then(create_match_response => {
+            if(create_match_response.message === "new match successfully created"){
+                this.props.onSetStateGlobalMessage(`match ${create_match_response.data} created successfully`)
+                this.setState({redirect: "/"});
             }
             else{
-                this.setState({message: "Please fill all inputs"})
-                console.log(response.message);
+                this.props.onSetStateGlobalMessage(create_match_response.message);
+                console.log(create_match_response.message);
             }
+        })
+        // just testing here to see if i can call then and fetch all matches after i submit 
+        .then((data) => {
+            console.log(data);
+            this.props.onEndPointFetch("get")
+            .then(preview_matches_response => {
+                if(preview_matches_response.message === "preview matches retrieved successfully"){
+                    this.props.setStateMatches(preview_matches_response.data)
+                }
+                else{
+                    // some better error handling needed in case preview matches are not done
+                    console.log(preview_matches_response.message);
+                    // will set global state messages here if it doesnt work
+                }
+            })
+            .catch(console.log);
         })
         .catch(console.log);
     }
-    render(){
 
+    render(){
         return(
             <div className="create-match">
                 <form name="form" onSubmit={this.onSubmitHandler}>
-                    <label htmlFor="match_id">Match id</label>
-                    <input required id="match_id" name="match_id" type="number" 
-                    // this input will be gone anyway
-                    min={Math.max(...this.props.matches.map(m => m.match_id))+1} 
-                    max={Math.max(...this.props.matches.map(m => m.match_id))+1} 
-                    onChange={this.onChangeHandler} value={this.state.match.match_id}/>
 
                     <label htmlFor="match_name">Match name</label>
-                    <input required id="match_name" name="match_name" type="text" onChange={this.onChangeHandler} value={this.state.match_name}/>
+                    <input required id="match_name" name="match_name" type="text" onChange={this.onChangeHandler} value={this.state.create_match.match_name}/>
 
-                    <label htmlFor="date_start">Match Start</label>
-                    <input required id="date_start" name="date_start" type="datetime-local" onChange={this.onChangeHandler} value={this.state.match.date_start}/>
+                    <label htmlFor="match_date_start">Match Start</label>
+                    <input required id="match_date_start" name="match_date_start" type="datetime-local" onChange={this.onChangeHandler} value={this.state.create_match.match_date_start}/>
 
-                    <label htmlFor="date_end">Match End</label>
-                    <input required id="date_end" name="date_end" type="datetime-local" onChange={this.onChangeHandler} value={this.state.match.date_end}/>
+                    <label htmlFor="match_date_end">Match End</label>
+                    <input required id="match_date_end" name="match_date_end" type="datetime-local" onChange={this.onChangeHandler} value={this.state.create_match.match_date_end}/>
 
-                    <label htmlFor="venue">Venue</label>
-                    <input required id="venue" name="venue" type="text" onChange={this.onChangeHandler} value={this.state.match.venue}/>
+                    <label htmlFor="match_venue">match_venue</label>
+                    <input required id="match_venue" name="match_venue" type="text" onChange={this.onChangeHandler} value={this.state.create_match.match_venue}/>
 
                     <input type="submit" value="Submit"/>
                 </form>

@@ -6,7 +6,7 @@ import MatchPreviewFinished from "../../components/match-preview-finished/match-
 
 import "./home.styles.css";
 
-const Home = ({preview_matches, logged_user, setStateMatches, onSetStatePlayerMatches, onEndPointFetch, weather}) => {
+const Home = ({preview_matches, user_id, user_name, user_signed_up_matches, setStateMatches, onSetStatePlayerMatches, onEndPointFetch, weather}) => {
         // this function should be a component, or a function somewhere in a module, to be used in match component too
         const renderMatchPreview = () => {
             return <>
@@ -42,16 +42,16 @@ const Home = ({preview_matches, logged_user, setStateMatches, onSetStatePlayerMa
                             return index < 3
                         })
                         .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreviewUpcoming
+                            // this needs to be a function or a component, as it repeats in matches component too
                             match_id={upcoming_match.match_id}
                             match_name={upcoming_match.match_name}
                             match_date_start={upcoming_match.match_date_start}
                             match_date_end={upcoming_match.match_date_end}
                             match_venue={upcoming_match.match_venue}
                             match_players_signed_up={upcoming_match.match_players_signed_up}
-                            user_id={logged_user.id} 
-                            user_name={logged_user.name}
-                            // joined matches should be a simple array of numbers only
-                            joined_matches={logged_user.joined_matches} 
+                            user_id={user_id} 
+                            user_name={user_name}
+                            user_signed_up_matches={user_signed_up_matches} 
                             setStateMatches={setStateMatches}
                             onSetStatePlayerMatches={onSetStatePlayerMatches}
                             onEndPointFetch={onEndPointFetch}

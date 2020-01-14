@@ -27,22 +27,14 @@ class Login extends React.Component {
         this.props.onEndPointFetch("post", "/login", this.state.login)
         .then(response => {
             if(response.message === "user logged in successfully"){
+                console.log(response);
                 // setting state in app.js of currently logged user 
-                this.props.setStateLoggedUser(response.data.id, response.data.name, response.data.email, response.data.joined_matches)
+                this.props.setStateLoggedUser(response.data);
 
-                // fetching and setting state in app.js of all joined matches for the logged user
-                this.props.onEndPointFetch("get", `/joinedmatches/${response.data.id}`)
-                .then(user_matches_response => {
-                    if(user_matches_response.message === "user matches fetched successfully"){
-                        this.props.onSetStatePlayerMatches(user_matches_response.data);
-                        this.setState({message: null, redirect: "/"})
-                    }
-                    else{
-                        this.setState({message: user_matches_response.message})
-                    }
-                })
+
             }
             else{
+                console.log(response);
                 this.setState({message: response.message})
             }
         })

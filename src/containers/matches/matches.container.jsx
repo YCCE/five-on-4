@@ -6,7 +6,7 @@ import MatchPreviewFinished from "../../components/match-preview-finished/match-
 
 import "./matches.styles.css";
 
-const Matches = ({preview_matches, logged_user, setStateMatches, onSetStatePlayerMatches, onEndPointFetch, weather}) => {
+const Matches = ({preview_matches, user_id, user_name, user_signed_up_matches, setStateMatches, onSetStatePlayerMatches, onEndPointFetch}) => {
     // this function should be a component, to be used in home component too
     const renderMatchPreview = () => {
         return <>
@@ -36,15 +36,16 @@ const Matches = ({preview_matches, logged_user, setStateMatches, onSetStatePlaye
                         return new Date(match.match_date_start) > Date.now();
                     })
                     .map(upcoming_match => <li key={upcoming_match.match_id}><MatchPreviewUpcoming
+                        // this needs to be a function or a component, as it repeats in matches component too
                         match_id={upcoming_match.match_id}
                         match_name={upcoming_match.match_name}
                         match_date_start={upcoming_match.match_date_start}
                         match_date_end={upcoming_match.match_date_end}
                         match_venue={upcoming_match.match_venue}
                         match_players_signed_up={upcoming_match.match_players_signed_up}
-                        user_id={logged_user.id} 
-                        // joined matches should be a simple array of numbers only
-                        joined_matches={logged_user.joined_matches} 
+                        user_id={user_id} 
+                        user_name={user_name}
+                        user_signed_up_matches={user_signed_up_matches} 
                         setStateMatches={setStateMatches}
                         onSetStatePlayerMatches={onSetStatePlayerMatches}
                         onEndPointFetch={onEndPointFetch}

@@ -20,11 +20,10 @@ class MatchDetailed extends React.Component {
                 match_players_attended: [],
                 match_home_score: "0",
                 match_away_score: "0",
-                match_home_scorers: [],
-                match_away_scorers: [],
+                match_scorers: [],
                 match_home_team: [],
                 match_away_team: [],
-                match_reported: false,
+                match_reported: null,
             },
             detailed_match_weather: {
                 summary: "",
@@ -42,7 +41,7 @@ class MatchDetailed extends React.Component {
         const {id} = this.props.match.params;
         const {onEndPointFetch} = this.props;
         // fetching match and weather
-        onEndPointFetch("get", `/match/${id}`)
+        onEndPointFetch("get", `/detailedmatch/${id}`)
         .then(detailed_match_response => {
             if(detailed_match_response.message === "detailed match retrieved successfully"){
 
@@ -71,13 +70,13 @@ class MatchDetailed extends React.Component {
     }
     // function for setting match state for other components
     setStateMatchDetailed = (match) => {
-        this.setState({match: match});
+        this.setState({detailed_match: match});
     }
     // function to render appropriate button to join, unjoin match or login to do so
     // this should probably be a function because it repeats in match detailed too
      renderMatchAction = () => {
-        const {joined_matches, onEndPointFetch, setStateMatches, user_id, onSetStatePlayerMatches} = this.props;
-        if(joined_matches.includes(this.state.detailed_match.match_id)){
+        const {user_signed_up_matches, onEndPointFetch, setStateMatches, user_id, onSetStatePlayerMatches} = this.props;
+        if(user_signed_up_matches && user_signed_up_matches.includes(this.state.detailed_match.match_id)){
             return <UnjoinMatchButton
                         onEndPointFetch={onEndPointFetch}
                         match_id={this.state.detailed_match.match_id}
@@ -104,8 +103,9 @@ class MatchDetailed extends React.Component {
     }
 
     render(){
+        console.log(this.state.detailed_match);
         const {goBack} = this.props.history;
-        const {match_id, match_name, match_date_start, match_date_end,match_venue, match_players_signed_up, match_players_attended, match_home_score, match_away_score, match_home_scorers,match_away_scorers, match_home_team, match_away_team, match_reported } = this.state.detailed_match;
+        const {match_id, match_name, match_date_start, match_date_end,match_venue, match_reported, match_home_score, match_away_score, match_players_signed_up, match_players_attended, match_scorers, match_home_team, match_away_team} = this.state.detailed_match;
 
         return (
             <div>
@@ -118,12 +118,13 @@ class MatchDetailed extends React.Component {
                     <p>end: {new Date(this.state.detailed_match.match_date_end).toLocaleTimeString().slice(0,5)}, {new Date (this.state.detailed_match.match_date_end).toDateString()}</p> 
                     <p>venue: {this.state.detailed_match.match_venue}</p> 
                     <p>players signed up:</p> 
-                    <ol>{match_players_signed_up.map(player => {
+                    {match_players_signed_up? 
+                    (<ol>{match_players_signed_up.map(player => {
                         return <li key={player}>{player}</li>
-                    })}</ol>
-
+                    })}</ol>)
+                    :("no players have signed up yet.")}
                 </div>
-            {match_reported? (
+                {match_reported? (
                 <div className="detailed-match-report-info">
                     <h3>Match Report</h3>
                     <p>players attended:</p>  
@@ -135,16 +136,12 @@ class MatchDetailed extends React.Component {
                     <ol>{match_home_team.map(player => {
                         return <li key={player}>{player}</li>
                     })}</ol>
-                    <p>home scorers:</p>
-                    <ol>{match_home_scorers.map(player => {
-                        return <li key={player}>{player}</li>
-                    })}</ol>
                     <p>away team:</p>
                     <ol>{match_away_team.map(player => {
                         return <li key={player}>{player}</li>
                     })}</ol>
-                    <p>away scorers:</p>
-                    <ol>{match_away_scorers.map(player => {
+                    <p>scorers:</p>
+                    <ol>{match_scorers.map(player => {
                         return <li key={player}>{player}</li>
                     })}</ol>
                 </div>):
