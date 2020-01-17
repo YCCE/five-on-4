@@ -128,6 +128,7 @@ class MatchDetailed extends React.Component {
                 <div className="detailed-match-report-info">
                     <h3>Match Report</h3>
                     <p>players attended:</p>  
+{/* TODO            // there is several of this, incl match report, where i dont have array in the state, so have to use this workaroudn. ideally, database needs to return null */}
                     <ol>{match_players_attended.map(player => {
                         return <li key={player}>{player}</li>
                     })}</ol>
@@ -145,8 +146,9 @@ class MatchDetailed extends React.Component {
                         return <li key={player}>{player}</li>
                     })}</ol>
                 </div>):
-                (<button>Create Match Report</button>)
-            }
+                (<Link to={`/forreportmatch/${this.props.match.params.id}`}>
+                    <input type="button" value="Create Match Report"/>
+                </Link>)}
 
 
                 {/* this will be a separate component for weather, used on the home page as well */}

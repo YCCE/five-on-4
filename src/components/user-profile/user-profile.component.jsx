@@ -1,62 +1,110 @@
 import React from "react";
 
 import "./user-profile.styles.css";
-import { useStore } from "react-redux";
 
 const UserProfile = (props) => {
-    const { id, name, email, joined_matches } = props.logged_user;
-    // lets just calculate past signed up matches
-    const past_signed_up_matches = joined_matches.filter(match => {
-        return new Date(match.date_end) < Date.now()
-    });
-    // and then calculate past attended matches
-    // this data should also be in joined matches array because i have full matches there
-    const past_attended_matches = joined_matches.filter(match => {
-        return (new Date(match.date_end) < Date.now()) && (match.users_attended.includes(id))
-    })
-    // calculate future matches
-    const future_signed_up_matches = joined_matches.filter(match => {
-        return (new Date(match.date_start) > Date.now())
-    })
-    // calculate current signed up matches
-    const current_signed_up_matches = joined_matches.filter(match => {
-        return new Date(match.date_start) < Date.now() && new Date(match.date_end) > Date.now()
-    })
-    // calculate all goals ever
-    // merge all home and away scorers 
-
-    const total_goals = joined_matches.map(match => {
-        return match.home_scorers.concat(match.away_scorers);
-    }).flat().filter(scorer => {
-        return scorer === id;
-    }).length;
+    const {
+        user_id,
+        user_name,
+        user_email,
+        user_created,
+        user_signed_up_matches,
+        user_attended_matches,
+        user_in_home_team,
+        user_in_away_team,
+        user_matches_won_as_home,
+        user_matches_won_as_away,
+        user_matches_lost_as_home,
+        user_matches_lost_as_away,
+        user_scored_in_matches} = props.logged_user;
 
     return (
         <div className="user-profile">
             <h1>User Profile Component</h1>
-            <p>Player Name: <strong>{name}</strong></p>
-            <p>Total Past Matches Signed Up For: {past_signed_up_matches.length}
-            {/* so here map through joined matches to show only matches that were in the past and that were attended */}
+            <h2>User Details</h2>
+            <p>name: <strong>{user_name}</strong></p>
+            <p>id: <strong>{user_id}</strong></p>
+            <p>email address: <strong>{user_email}</strong></p>
+            <p>account created: <strong>{user_created}</strong></p>
+            <h2>Match Contribution</h2>
+            <p>reliability: <strong>{(user_attended_matches.length/user_signed_up_matches.length)}</strong></p>
+            <p>won games: <strong>{(user_matches_won_as_home.concat(user_matches_won_as_away).length/user_attended_matches.length)*100}%</strong></p>
+            <p>goals per game: <strong>{user_scored_in_matches.length/user_attended_matches.length}</strong></p>
+            <h2>Match Details</h2>
+            <p>signed up matches so far: <strong>{user_signed_up_matches.length}</strong></p>
+            {/* here is should show name or date better even, and be able to link to it. some kind of object sent from db to front end holding this data? yes*/}
+            <ul>
                 {
-                    console.log(joined_matches)
+                 user_signed_up_matches.map(match => {
+                     return (
+                <li key={match.match_id}>
+                    <p>{match.match_name} on {new Date(match.match_date).toDateString()}</p>
+                </li>)
+                 })   
                 }
-            </p>
-            <p>Total Past Matches Attended: {past_attended_matches.length}</p>
-            <p>Signed up match attendence - how reliable of a team-mate are you: {(past_attended_matches.length/past_signed_up_matches.length)*100}%</p>
-            <p>Future matches Signed up for  {future_signed_up_matches.length}</p>
-            {/* then a list of all matches */}
-            {/* these matches can be clicked and checked for details - it would take us to same deatiled page as from home and matches container */}
-            <p>Current matches signed up for {current_signed_up_matches.length}</p>
-            <p>Total Goals: {total_goals}</p>
-            <p>Total Matches Created</p>
-            <p>Date Joined</p>
-            {/* for future features and functionalities */}
-            <h4>For future expanded features and functionality:</h4>
-            <p>Home Team</p>
-            <p>Tendency to be on the winning team: </p>
-            <p>Teams played for</p>
-            <p>Tournatems played</p>
-            <p>... and more</p>
+            </ul>
+
+            <p>attended matches so far: <strong>{user_attended_matches.length}</strong></p>
+            <ul>
+                {
+                 user_attended_matches.map(match => {
+                     return (
+                <li key={match.match_id}>
+                    <p>{match.match_name} on {new Date(match.match_date).toDateString()}</p>
+                </li>)
+                 })   
+                }
+            </ul>
+
+            <p>goals scored so far: <strong>{user_scored_in_matches.reduce((acc, val) => {return acc + val.match_goals_scored},0)}</strong></p>
+            <ul>
+                {
+                    user_scored_in_matches.map(match => {
+                     return (
+                <li key={match.match_id}>
+                    <p>{match.match_name} on {new Date(match.match_date).toDateString()}, goals: {match.match_goals_scored}</p>
+                </li>)
+                 })   
+                }
+            </ul>
+{/* there is an issue here of player being able to play for both home and away. i play to leave it that way */}
+            <p>total matches won : <strong>{user_matches_won_as_home.concat(user_matches_won_as_away).length}</strong></p>
+            <ul>
+                {
+                    user_matches_won_as_home.concat(user_matches_won_as_away).map(match => {
+                     return (
+                <li key={match.match_id}>
+                    <p>{match.match_name} on {new Date(match.match_date).toDateString()}</p>
+                </li>)
+                 })   
+                }
+            </ul>
+
+            <p>total matches lost : <strong>{user_matches_lost_as_home.concat(user_matches_lost_as_away).length}</strong></p>
+            <ul>
+                {
+                    user_matches_lost_as_home.concat(user_matches_lost_as_away).map(match => {
+                     return (
+                <li key={match.match_id}>
+                    <p>{match.match_name} on {new Date(match.match_date).toDateString()}</p>
+                </li>)
+                 })   
+                }
+            </ul>
+
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+            <p><strong>{}</strong></p>
+
         </div>
     )
 }

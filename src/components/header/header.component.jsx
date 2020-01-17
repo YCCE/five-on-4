@@ -17,7 +17,10 @@ const Header = ({user_name, user_signed_up_matches, setStateLoggedUser}) => (
                         <li>Hello,  
                         <Link to="/profile"> {user_name.charAt(0).toUpperCase()+user_name.slice(1)}</Link>
                         ! Signed up matches: {user_signed_up_matches? user_signed_up_matches.length: 0}</li>
-                        <li onClick={setStateLoggedUser}>Logout</li>
+                        <li 
+                        onClick={setStateLoggedUser}>
+                            <Link to="/">Logout</Link>
+                        </li>
                     </>):
                     (<>
                         <li><Link to="/login">Login</Link></li>

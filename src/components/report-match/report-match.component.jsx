@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter, Redirect } from "react-router-dom";
 
 import "./report-match.styles.css";
 
@@ -6,22 +7,44 @@ class ReportMatch extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            match_players_signed_up: ['user2',  'user3','user4',  'user5','user6',  'user7','user8','user9','user10','user11'],
-
-            match_players_attended: ['user2','user5','user6',  'user7','user8','user9','user10', 'user11'],
-
-            match_scorers: [ 'user2', 'user2', 'user8', 'user8','user5', 'user5' ],
-
-    match_home_team: [ 'user2', 'user6', 'user5' ],
-
-    match_away_team: [ 'user8', 'user9', 'user7', 'user10', 'user11' ],
+            match_players_signed_up: [],
+            match_players_attended: [],
+            match_scorers: [],
+            match_home_team: [],
+            match_away_team: [],
             match_reported: false,
-            match_home_score: 4,
-            match_away_score: 2,
-            karlo: "dah"
+            match_home_score: "",
+            match_away_score: "",
+            redirect: null,
         };
+
+        /* 
+            onEndPointFetch={this.onEndPointFetch}
+            setStateMatches={this.setStateMatches}
+            onSetStateGlobalMessage
+        */
     }
+
+    componentDidMount(){
+        const {id} = this.props.match.params;
+        const {onEndPointFetch, onSetStateGlobalMessage} = this.props;
+        onEndPointFetch("get",`/forreportmatch/${id}`)
+        .then(match_for_report => {
+            if(match_for_report.message === "data for match report retrieved successfully"){
+                this.setState(match_for_report.data);
+                console.log("data here", match_for_report.data);
+            }
+            else{
+                console.log(match_for_report.data)
+                onSetStateGlobalMessage(match_for_report.message)
+            }
+        })
+        .catch(console.log);
+
+    }
+
     onChangeHandle = (event) => {
+        // these should be adjusted to use prev state instead of actual state
         if(event.target.name === "match_scorers"){
             this.setState({match_scorers: this.state.match_scorers.filter(scorer => scorer !== event.target.id).concat(new Array(Number(event.target.value)).fill(event.target.id))});
         }
@@ -35,13 +58,61 @@ class ReportMatch extends React.Component{
         }
     }
     onSubmitHandle = (event) => {
+        const {id} = this.props.match.params;
+        const {onEndPointFetch, onSetStateGlobalMessage, setStateMatches} = this.props;
         event.preventDefault();
-        this.setState({match_reported: true})
-        console.log(this.state);
+        // not really needed repoirted, but just to have full state up to date
+        // this is async, so it is not updated in time to be sent to backend. need to figure it out, for now i hardcode true for it in the object to be sent, assuming when report is clicked, report should be considered as true anyway
+        // this.setState({match_reported: true});
+        const match_report_for_db = {
+            match_players: this.state.match_players_signed_up.map(player => {
+                return {
+                    user_name: player,
+                    part_attended: this.state.match_players_attended.includes(player),
+                    part_home_team: this.state.match_home_team.includes(player),
+                    part_away_team: this.state.match_away_team.includes(player),
+                    part_scored: this.state.match_scorers.filter(scorer => scorer === player).length,
+                }
+            }),
+            report_match_reported: true,
+            report_home_score: this.state.match_home_score,
+            report_away_score: this.state.match_away_score
+        }
+        onEndPointFetch("put",`/reportmatch/${id}`, match_report_for_db)
+        .then(reported_match_response => {
+            if(reported_match_response.message = "the match was successfully updated"){
+                // redirect to the same detailed match we came from
+                this.setState({redirect: `/match/${id}`});
+            }
+            else{
+                // stay, show global message
+                onSetStateGlobalMessage(reported_match_response.message)
+                console.log(reported_match_response.message)
+            }
+        })
+        // also need to fetch all matches for global state
+        .then(() => {
+// TODO     // this code repeats same as in create and update match
+            onEndPointFetch("get")
+            .then(preview_matches_response => {
+                if(preview_matches_response.message === "preview matches retrieved successfully"){
+                    setStateMatches(preview_matches_response.data)
+                }
+                else{
+                    // some better error handling needed in case preview matches are not done
+                    console.log(preview_matches_response.message);
+                    // will set global state messages here if it doesnt work
+                }
+            })
+            .catch(console.log);
+        })
+        .catch(console.log);
     }
-
+    // prolly need split into several components this
     render(){
-        const {match_players_signed_up, match_players_attended, match_scorers, match_home_team, match_away_team} = this.state;
+        console.log(this.props);
+        const {match_players_signed_up} = this.state;
+        
         return(
             <div>
                 <h1>Match Report</h1>
@@ -52,6 +123,7 @@ class ReportMatch extends React.Component{
                                 <li>
                                     <span><strong>{player_signed_up} </strong></span>
                                     <span>
+                                    {/* again issue with null && here */}
                                         <label htmlFor={player_signed_up}>Attended</label>
                                         <input 
                                         id={player_signed_up} 
@@ -101,7 +173,7 @@ class ReportMatch extends React.Component{
                         name="match_home_score" 
                         type="number" 
                         min="0"
-                        value={this.state.match_home_score}
+                        value={this.state.match_home_score || 0}
                         onChange={this.onChangeHandle}
                         />
                         <label htmlFor="match_away_score">Away Score</label>
@@ -110,29 +182,18 @@ class ReportMatch extends React.Component{
                         name="match_away_score" 
                         type="number" 
                         min="0"
-                        value={this.state.match_away_score}
+                        value={this.state.match_away_score || 0}
                         onChange={this.onChangeHandle}
                         />
                         <br/>
                         <p>Cancel The Report</p>
                         <button>Report The Match</button>
                     </form>
-
+{/* TODO            // should probably use that shorter conditioanl && something */}
+                    {this.state.redirect? <Redirect to={this.state.redirect}/>: null}
             </div>
-
-
-            
-
-
-
-
-
-
-
-
-
         )
     }
 }
 
-export default ReportMatch;
+export default withRouter(ReportMatch);

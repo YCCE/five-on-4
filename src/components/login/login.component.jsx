@@ -17,6 +17,7 @@ class Login extends React.Component {
             logged_id: null,
         }
     }
+// TODO    // i should probably unnest state. and everywhere else too!!
     onLoginChangeHandler = (event) => {
         this.setState({login: Object.assign({}, this.state.login, {[event.target.name]: event.target.value})})
     }
@@ -30,11 +31,10 @@ class Login extends React.Component {
                 console.log(response);
                 // setting state in app.js of currently logged user 
                 this.props.setStateLoggedUser(response.data);
-
-
             }
             else{
                 console.log(response);
+// TODO         // THIS NEEDS TO GO TO GLOBAL MESSAGE STATE
                 this.setState({message: response.message})
             }
         })

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from "react-router-dom";
 
+import ProtectedRoute from "./components/protected-route/protected-route.component";
 import Header from "./components/header/header.component";
 import Home from "./containers/home/home.container";
 import Matches from "./containers/matches/matches.container";
@@ -23,7 +24,16 @@ class  App extends React.Component {
         user_id: "",
         user_name: "",
         user_email: "",
+        user_created: "",
         user_signed_up_matches: [],
+        user_attended_matches: [],
+        user_in_home_team: [],
+        user_in_away_team: [],
+        user_matches_won_as_home: [],
+        user_matches_won_as_away: [],
+        user_matches_lost_as_home: [],
+        user_matches_lost_as_away: [],
+        user_scored_in_matches: []
       },
       home_weather: {},
       message: "",
@@ -52,6 +62,10 @@ class  App extends React.Component {
       }
     })
     .catch(console.log);
+  }
+
+  redirect_if_guest = () => {
+
   }
 
   // setting state data from the app
@@ -92,7 +106,11 @@ class  App extends React.Component {
     console.log("main state:", this.state);
     return (
       <div>
-        <Header user_name={this.state.logged_user.user_name} user_signed_up_matches={this.state.logged_user.user_signed_up_matches}/>
+        <Header 
+          user_name={this.state.logged_user.user_name} 
+          user_signed_up_matches={this.state.logged_user.user_signed_up_matches}
+          setStateLoggedUser={this.setStateLoggedUser}
+          />
         <p>{this.state.message? this.state.message: ""}</p>
         <Switch>
           <Route exact path="/">
@@ -130,18 +148,31 @@ class  App extends React.Component {
             />
           </Route>
           <Route path="/creatematch">
+            <ProtectedRoute user_name={this.state.logged_user.user_name}>
             <CreateMatch 
               onEndPointFetch={this.onEndPointFetch} 
               setStateMatches={this.setStateMatches}
               onSetStateGlobalMessage={this.onSetStateGlobalMessage}
             />
+            </ProtectedRoute>
           </Route>
           <Route path="/updatematch/:id">
-            <UpdateMatch 
-              onEndPointFetch={this.onEndPointFetch} 
-              setStateMatches={this.setStateMatches}
-              onSetStateGlobalMessage={this.onSetStateGlobalMessage}
-            />
+            <ProtectedRoute user_name={this.state.logged_user.user_name}>
+              <UpdateMatch 
+                onEndPointFetch={this.onEndPointFetch} 
+                setStateMatches={this.setStateMatches}
+                onSetStateGlobalMessage={this.onSetStateGlobalMessage}
+              />
+            </ProtectedRoute>
+          </Route>
+          <Route path="/forreportmatch/:id" >
+            <ProtectedRoute user_name={this.state.logged_user.user_name}>
+              <ReportMatch
+                onEndPointFetch={this.onEndPointFetch}
+                onSetStateGlobalMessage={this.onSetStateGlobalMessage}
+                setStateMatches={this.setStateMatches}
+              />
+            </ProtectedRoute>
           </Route>
           <Route path="/login">
             <Login 
@@ -157,14 +188,9 @@ class  App extends React.Component {
             />
           </Route>
           <Route path="/profile">
-            <UserProfile 
-              logged_user={this.state.logged_user}
-            />
-          </Route>
-
-          {/* just test for now */}
-          <Route path="/reportmatch" >
-            <ReportMatch />
+            <ProtectedRoute user_name={this.state.logged_user.user_name}>
+              <UserProfile logged_user={this.state.logged_user}/>
+            </ProtectedRoute>
           </Route>
         </Switch>
 
