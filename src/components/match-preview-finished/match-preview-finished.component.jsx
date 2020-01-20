@@ -11,7 +11,7 @@ const MatchPreviewFinished = ({match_id, match_name, match_date_start, match_dat
             <p>ended: {new Date(match_date_end).toLocaleString()}</p>
             <p>players attended: {match_players_attended}</p>
             <p>venue: {match_venue}</p>
-            <Link to={`/match/${match_id}`}>
+            <Link to={`/detailedmatch/${match_id}`}>
                 <input type="button" value="Details"/>
             </Link>
 
