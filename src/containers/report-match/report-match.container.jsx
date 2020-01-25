@@ -47,6 +47,7 @@ class ReportMatch extends React.Component{
         return this.setState({[name]: Number(value)});
     }
     onHandleSubmit = (event) => {
+        console.log(this.state);
         const {id} = this.props.match.params;
         const {fetchEndPoint, setStateGlobalMessage, setStateMatches} = this.props;
         const {
@@ -63,17 +64,18 @@ class ReportMatch extends React.Component{
             match_players: match_players_signed_up.map(player => {
                 return {
                     // mozda id ovdje?
-                    user_name: player.user_name,
+                    user_id: player.user_id,
                     part_attended: match_players_attended.some(playerAttended => playerAttended.user_id === player.user_id),
                     part_home_team: match_home_team.some(playerHome => playerHome.user_id === player.user_id),
                     part_away_team: match_away_team.some(playerAway => playerAway.user_id === player.user_id),
-                    part_scored: match_scorers.find(playerScored => playerScored.user_id === player.user_id).user_goals,
+                    part_scored: match_scorers.find(playerScored => playerScored.user_id === player.user_id).user_goals || 0,
                 }
             }),
             report_match_reported: true,
-            report_home_score: match_home_score,
-            report_away_score: match_away_score
+            report_home_score: match_home_score || 0,
+            report_away_score: match_away_score || 0,
         }
+        console.log(matchReportForDb);
         fetchEndPoint("put",`/reportmatch/${id}`, matchReportForDb)
         .then(reportedMatchResponse => reportedMatchResponse.message === "the match report was successfully updated" && this.setState({redirect: `/detailedmatch/${id}`}))
         .catch(reprtdMtchErr => {
@@ -93,6 +95,7 @@ class ReportMatch extends React.Component{
     render(){
         const {redirect, ...matchReport} = this.state;
         const {goBack} = this.props.history;
+        console.log(this.state);
 
         return(
             <div className="report-match-container">

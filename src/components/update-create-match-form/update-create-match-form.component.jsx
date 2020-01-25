@@ -36,7 +36,7 @@ const UpdateCreateMatchForm = ({matchForUpdate, onChangeHandle, onSubmitHandle, 
                     onChange={onChangeHandle} 
                     value={match_date_end}/>
 
-                <label htmlFor="venue" className="update-create-label-venue">Match_venue</label>
+                <label htmlFor="venue" className="update-create-label-venue">Match Venue</label>
                 <input 
                     className="update-create-venue"
                     required id="match_venue" name="match_venue" 
