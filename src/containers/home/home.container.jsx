@@ -9,9 +9,6 @@ const Home = ({preview_matches, user_id, user_name, user_signed_up_matches, setS
 
     return (
         <div className="home">
-            <WeatherView
-                    matchDate={Math.round(Date.now()/1000)}
-                    fetchEndPoint={fetchEndPoint}/>
             <MapPreviewMatches
                 preview_matches={preview_matches} 
                 user_id={user_id}
@@ -21,6 +18,12 @@ const Home = ({preview_matches, user_id, user_name, user_signed_up_matches, setS
                 setStatePlayerMatches={setStatePlayerMatches}
                 fetchEndPoint={fetchEndPoint}
                 setStateGlobalMessage={setStateGlobalMessage}/>
+
+            <WeatherView 
+                matchDate={Math.round(Date.now()/1000)}
+                fetchEndPoint={fetchEndPoint}
+                parentCss="home-weather"
+                />
         </div>
     )
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Switch, Route } from "react-router-dom";
 
+import "./App.css";
+
 import ProtectedRoute from "./components/protected-route/protected-route.component";
 import Header from "./components/header/header.component";
 import Home from "./containers/home/home.container";
@@ -55,6 +57,7 @@ class  App extends React.Component {
   // set logged player
   setStateLoggedUser = (user={user_id:"", user_name:"", user_email:"", user_signed_up_matches:[]}) => {
     this.setState({logged_user: user})
+    console.log("user", user);
   }
   // set state logged player's joined games
   setStatePlayerMatches = (matches_array) => {
@@ -65,9 +68,9 @@ class  App extends React.Component {
     this.setState({match_weather: weather_object});
   }
   // set global message state
-  setStateGlobalMessage = (message) => {
+  setStateGlobalMessage = (message="") => {
     this.setState({message: message});
-    console.log(message);
+    setTimeout(() => this.setState({message: ""}), 2000);
   }
   // fetch anything function
   fetchEndPoint = (method, param="", data) => {
@@ -82,19 +85,17 @@ class  App extends React.Component {
 
 
   render(){
-    console.log("main state:", this.state);
+    console.log("user:", this.state.logged_user);
     return (
-      <div>
+      <div className="container">
         <Header 
           user_name={this.state.logged_user.user_name} 
           user_signed_up_matches={this.state.logged_user.user_signed_up_matches}
-          setStateLoggedUser={this.setStateLoggedUser}
-          />
-        <p>{this.state.message? this.state.message: ""}</p>
-        <GlobalMessage 
-          message={this.state.message}
-          setStateGlobalMessage={this.setStateGlobalMessage}
-          />
+          setStateLoggedUser={this.setStateLoggedUser}>
+            <GlobalMessage 
+              message={this.state.message}
+              setStateGlobalMessage={this.setStateGlobalMessage}/>
+        </Header>
         <Switch>
           <Route exact path="/">
             <Home 
@@ -147,13 +148,13 @@ class  App extends React.Component {
             </ProtectedRoute>
           </Route>
           <Route path="/matchreport/:id" >
-            {/* <ProtectedRoute user_name={this.state.logged_user.user_name}> */}
+            <ProtectedRoute user_name={this.state.logged_user.user_name}>
               <ReportMatch
                 fetchEndPoint={this.fetchEndPoint}
                 setStateGlobalMessage={this.setStateGlobalMessage}
                 setStateMatches={this.setStateMatches}
               />
-            {/* </ProtectedRoute> */}
+            </ProtectedRoute>
           </Route>
           <Route path={"/login"}>
             <LoginRegister 

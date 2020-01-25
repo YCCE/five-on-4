@@ -3,20 +3,18 @@ import { Link } from "react-router-dom";
 
 import "./match-preview-current.styles.css";
 
-const MatchPreviewCurrent = ({match_id, match_name, match_date_start, match_date_end, match_venue, match_players_signed_up}) => {
+const MatchPreviewCurrent = ({match_id, match_name, match_date_end, match_venue, match_players_signed_up}) => {
     return (
-        <div>
-            <h2>{match_name}</h2>
-            <p>started: {new Date(match_date_start).toLocaleString()}</p>
-            <p>ends: {new Date(match_date_end).toLocaleString()}</p>
-            <p>players signed up: {match_players_signed_up}</p>
-            <p>venue: {match_venue}</p>
+        <div className="match-preview-current">
             <Link to={`/detailedmatch/${match_id}`}>
-                <input type="button" value="Details"/>
+                <h1 className="match-current-name">{match_name}</h1>
             </Link>
 
-            {/* to be removed */}
-            <p>// to be removed // match id: {match_id}</p>
+            <p className="match-current-details">>
+                <span> {match_players_signed_up} players</span>
+                <span> at {match_venue}</span>
+                <span> until {new Date(match_date_end).toTimeString().slice(0,5)}</span>
+            </p>
         </div>
     )
 }

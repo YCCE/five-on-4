@@ -1,4 +1,7 @@
 .home {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto, auto, auto;
+    justify-content: center;
+    gap: 20px 30px;
 }

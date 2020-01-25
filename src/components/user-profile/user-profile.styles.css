@@ -1,0 +1,47 @@
+.user-profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: start;
+}
+.user-profile-view {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    background-color:#F8F8F8;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+}
+.user-profile-title {
+    margin: 5px 0 20px 10px;
+    padding: 0;
+    font-size: 24px;
+    color: #707070;
+}
+.user-profile-info-section {
+    margin: 0 0 5px 10px;
+    padding: 0;
+    color: #707070;
+    font-size: 18px;
+}
+.user-profile-info {
+    color: #707070;
+    font-size: 18px;
+    align-self: flex-start;
+    margin: 0 0 5px 175px;
+    padding: 0;
+}
+
+.user-profile-info-value {
+    font-weight: bold;
+}
+.user-profile-info-list-value {
+    /* font-weight: bold; */
+    margin: 0 0 5px 0;
+    padding: 0 0 0 10px;
+    font-size: 18px;
+    list-style-type: none;
+}

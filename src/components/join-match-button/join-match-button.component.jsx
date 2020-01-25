@@ -5,10 +5,7 @@ import "./join-match-button.styles.css";
 const JoinMatchButton = ({joinOrUnjoin}) => {
 
     return (
-        <input 
-        onClick={() => joinOrUnjoin("/joinmatch")}
-        type="button" 
-        value="Join The Match Button Component" />
+        <a className="button-join" href="" type="button" onClick={(e) => joinOrUnjoin(e,"/joinmatch")}>Join The Match</a>
     )
 }
 export default JoinMatchButton;

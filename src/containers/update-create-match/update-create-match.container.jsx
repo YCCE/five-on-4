@@ -50,14 +50,18 @@ class UpdateCreateMatch extends React.Component {
 
     render(){
         const {redirect, match} = this.state;
+        const {goBack} = this.props.history;
+
         return(
-        <div>
-            <h1>Update Create Match Component</h1>
-            <UpdateCreateMatchForm
-                onChangeHandle={this.onChangeHandle}
-                onSubmitHandle={this.onSubmitHandle}
-                match={match}
-            />
+        <div className="update-create-match">
+            <p className="button-go-back" onClick={goBack}>Go Back</p>
+            <div className="update-create-grid">
+                <UpdateCreateMatchForm
+                    onChangeHandle={this.onChangeHandle}
+                    onSubmitHandle={this.onSubmitHandle}
+                    match={match}
+                />
+            </div>
             {redirect && <Redirect to={redirect}/>}
         </div>        
         )

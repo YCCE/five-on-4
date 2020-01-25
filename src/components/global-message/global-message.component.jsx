@@ -4,16 +4,11 @@ import "./global-message.styles.css";
 
 const GlobalMessage = ({message, setStateGlobalMessage}) => {
     return(
-        <p>global message area: 
-            <span>
-            {message? (
-                <strong>message</strong>,
-                setTimeout(() => {
-                    setStateGlobalMessage()
-                },2000)
-            ): null}
-            </span>
-        </p>
+        <div className="global-message-area">
+            <p className="actual-global-message">
+                {message && <span>{message}</span>}
+            </p>
+        </div>
     )
 }
 

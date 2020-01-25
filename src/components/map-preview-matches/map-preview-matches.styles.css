@@ -1,0 +1,63 @@
+.preview-matches-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+.upcoming-matches-preview {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    height: auto;
+}
+.upcoming-matches-heading {
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 18px;
+    margin: 0 0 12px 0;
+    color: #707070;
+}
+.current-matches-preview {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    height: auto;
+}
+.current-matches-area {
+    background-color: #F8F8F8;
+    color: #707070;
+    border-radius: 2px;
+}
+.current-matches-heading {
+    text-align: right;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 18px;
+    margin: 0 0 12px 0;
+    color: #707070;
+}
+.finished-matches-preview {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    grid-row-end: 4;
+    height: auto;
+}
+.finished-matches-area {
+    background-color: #F8F8F8;
+    color: #707070;
+    border-radius: 2px;
+}
+.finished-matches-heading {
+    text-align: right;
+    padding: 0;
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 18px;
+    margin: 0 0 12px 0;
+    color: #707070;
+}

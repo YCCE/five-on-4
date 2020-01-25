@@ -1,0 +1,70 @@
+.match-preview-upcoming {
+    display: flex;
+    /* width: 720px; */
+    height: 174px;
+    background-color: #F8F8F8;
+    margin-bottom: 16px;
+}
+.match-preview-image, .match-preview-info {
+    /* border: 1px solid black */
+}
+.match-preview-image {
+    width: 355px;
+    height: 174px;
+}
+.match-preview-info {
+    width: 355px;
+    padding: 0 0 0 10px;
+    color: #707070;
+}
+.match-preview-name {
+    font-size: 18px;
+    padding: 4px 0 6px 0;
+    margin: 0;
+    width: 100%;
+}
+.match-preview-date {
+    padding: 0 0 4px 0px;
+    margin: 0;
+}
+.match-preview-time {
+    padding: 0 0 4px 0px;
+    margin: 0;
+}
+.match-preview-venue {
+    padding: 0 0 4px 0px;
+    margin: 0;
+}
+.match-preview-signed-up {
+    padding: 4px 0 15px 0;
+    margin: 0;
+}
+.match-preview-join {
+    color: red;
+}
+.match-preview-buttons {
+    display: flex;
+    /* justify-content: space-between; */
+
+}
+.match-preview-buttons > a {
+    /* margin: 0; */
+    text-decoration: none;
+}
+.match-preview-buttons > a {
+    height: 25px;
+    width: 168px;
+    background-color:#CBCBCB;
+    padding: 2px 11px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    color: #444444;
+    text-align: center;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 0 32px 0 0;
+}
+.match-preview-buttons > a:last-child {
+    margin : 0;
+    width: auto;
+}

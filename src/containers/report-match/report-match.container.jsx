@@ -75,11 +75,11 @@ class ReportMatch extends React.Component{
             report_away_score: match_away_score
         }
         fetchEndPoint("put",`/reportmatch/${id}`, matchReportForDb)
-        .then(reportedMatchResponse => reportedMatchResponse.message === "the match report was successfully updated" && this.setState({redirect: `/match/${id}`}))
+        .then(reportedMatchResponse => reportedMatchResponse.message === "the match report was successfully updated" && this.setState({redirect: `/detailedmatch/${id}`}))
         .catch(reprtdMtchErr => {
             console.log(reprtdMtchErr);
             setStateGlobalMessage("there was a problem updating match report. please try again");
-            this.setState({redirect: `/match/${id}`})
+            this.setState({redirect: `/detailedmatch/${id}`})
         })
         .then(() => {
             fetchEndPoint("get")
@@ -92,15 +92,22 @@ class ReportMatch extends React.Component{
     // prolly need split into several components this
     render(){
         const {redirect, ...matchReport} = this.state;
+        const {goBack} = this.props.history;
+
         return(
-            <>
-                <ReportMatchContent 
-                    matchReport={matchReport}
-                    onHandleChange={this.onHandleChange}
-                    onHandleSubmit={this.onHandleSubmit}
-                    />
-                {this.state.redirect && <Redirect to={this.state.redirect}/>}
-            </>
+            <div className="report-match-container">
+                <p className="button-go-back" onClick={goBack}>Go Back</p>
+                <div className="report-match-outer-grid">
+
+                    <ReportMatchContent 
+                        matchReport={matchReport}
+                        onHandleChange={this.onHandleChange}
+                        onHandleSubmit={this.onHandleSubmit}
+                        />
+                    {this.state.redirect && <Redirect to={this.state.redirect}/>}
+
+                </div>
+            </div>
             
         )
     }

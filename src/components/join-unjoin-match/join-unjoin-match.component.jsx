@@ -19,7 +19,8 @@ const JoinUnjoinMatch = (props) => {
         detailed_match
     } = props;
     
-    const joinOrUnjoin = (endpointParam) => {
+    const joinOrUnjoin = (event, endpointParam) => {
+        event.preventDefault();
         // join and unjoin button will send /joinmatch or /unjoinmatch arguments to access their endpoints
         fetchEndPoint("put", endpointParam, {user_id, match_id})
         .then(joinResponse => setStateGlobalMessage(joinResponse.message))
@@ -44,7 +45,10 @@ const JoinUnjoinMatch = (props) => {
         .then(() => {
             if(detailed_match){
                 return fetchEndPoint("get", `/detailedmatch/${match_id}`)
-                .then(detailedMatchResponse => detailedMatchResponse.message === "detailed match retrieved successfully" && setStateMatchDetailed(detailedMatchResponse.data))
+                .then(detailedMatchResponse => {
+                    detailedMatchResponse.message === "detailed match retrieved successfully" && setStateMatchDetailed(detailedMatchResponse.data)
+                    console.log(detailedMatchResponse.data);
+                })
                 .catch(detailedError => setStateGlobalMessage("there was an issue retrieving match details"))
             }
             return;

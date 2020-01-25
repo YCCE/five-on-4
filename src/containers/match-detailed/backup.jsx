@@ -40,7 +40,7 @@ class MatchDetailed extends React.Component {
     }
     // function for setting match state for other components
     setStateMatchDetailed = (match) => {
-        this.setState(match);
+        this.setState({detailed_match: match});
     }
 
     render(){
@@ -55,37 +55,42 @@ class MatchDetailed extends React.Component {
             setStateGlobalMessage
         } = this.props;
         const {match_id, match_date_start} = this.state;
+        console.log(match_date_start);
+        console.log(Math.round(new Date(match_date_start).getTime()/1000));
+
         return (
             <div className="match-detailed">
-                <p className="button-go-back" onClick={goBack}>Go Back</p>
-                <div className="match-detailed-grid">
-                    {match_date_start && 
-                    <MatchDetailedContent
-                        detailed_match={this.state}
-                        user_id={user_id}>
-                        {user_id? (  
-                        <JoinUnjoinMatch
-                            user_id={user_id}
-                            match_id={match_id} 
-                            user_signed_up_matches={user_signed_up_matches}
-                            fetchEndPoint={fetchEndPoint}
-                            setStateMatches={setStateMatches} 
-                            setStatePlayerMatches={setStatePlayerMatches}
-                            setStateGlobalMessage={setStateGlobalMessage}
-                            setStateMatchDetailed={this.setStateMatchDetailed}
-                            detailed_match
-                        />): <Link to="/login">Login to Join</Link>}
-                    </MatchDetailedContent>}
+                <button onClick={goBack}>Go Back</button>
 
-                    {match_date_start && 
-                    <WeatherView
-                        adjustMargin={"detailed-adjust-margin"}
-                        matchDate={Math.round(new Date(match_date_start).getTime()/1000)}
-                        fetchEndPoint={fetchEndPoint}/>}
-                </div>
+                <MatchDetailedContent
+                    detailed_match={this.state}
+                />
+                <Link to={`/matchreport/${match_id}`}>
+                <input type="button" value="Set Match Report"/>
+            </Link>
+                {match_date_start && 
+                <WeatherView
+                    matchDate={Math.round(new Date(match_date_start).getTime()/1000)}
+                    fetchEndPoint={fetchEndPoint}/>}
+
+                {this.props.user_id? (  
+                <JoinUnjoinMatch
+                    user_id={user_id}
+                    match_id={match_id} 
+                    user_signed_up_matches={user_signed_up_matches}
+                    fetchEndPoint={fetchEndPoint}
+                    setStateMatches={setStateMatches} 
+                    setStatePlayerMatches={setStatePlayerMatches} 
+                    setStateGlobalMessage={setStateGlobalMessage}
+                    setStateMatchDetailed={this.setStateMatchDetailed}
+                    detailed_match
+                />): <Link to="/login"><button>Login to join</button></Link>}
+                <Link to={`/updatematch/${match_id}`}>
+                    <input type="button" value="Edit"/>
+                </Link>
             </div>
         )
     }    
 }
 
-export default withRouter(MatchDetailed);
+// export default withRouter(MatchDetailed);

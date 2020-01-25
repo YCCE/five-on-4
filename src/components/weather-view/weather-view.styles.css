@@ -1,0 +1,75 @@
+.weather-view {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    height: auto;
+    background-color: #F8F8F8;
+    border-radius: 2px;
+    color: #707070;
+    margin: 36px 0 0 0;
+}
+.detailed-adjust-margin {
+    margin: 0;
+}
+.weather-view-title {
+    font-size: 18px;
+    text-align: right;
+    font-weight: normal;
+    margin: 4px 10px 5px 0;
+}
+
+.weather-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.weather-summary-temp {
+    font-size: 18px;
+    margin: 18px 0 25px 0;
+}
+
+
+/* weather icons */
+.weather-icon {
+    background-position: center;
+    background-size: 200px 200px; 
+    background-repeat: no-repeat;
+    width: 130px;
+    height: 130px;
+    /* align-self: center; */
+    padding: 0;
+    margin: 0 10px 0 25px;
+    opacity: 0.50;
+}
+.clear-day {
+    background-image: url("./weather-icons/Sun.svg");
+}
+.clear-night {
+    background-image: url("./weather-icons/Moon.svg");
+}
+.partly-cloudy-day {
+    background-image: url("./weather-icons/Cloud-Sun.svg");
+}
+.rain {
+    background-image: url("./weather-icons/Cloud-Rain.svg");
+}
+.snow {
+    background-image: url("./weather-icons/Cloud-Snow.svg");
+}
+.sleet {
+    background-image: url("./weather-icons/Cloud-Hail-Alt.svg");
+}
+.wind {
+    background-image: url("./weather-icons/Wind.svg");
+}
+.fog {
+    background-image: url("./weather-icons/Cloud-Fog-Alt.svg");
+}
+.cloudy {
+    background-image: url("./weather-icons/Cloud.svg");
+}
+.partly-cloudy-night {
+    background-image: url("./weather-icons/Cloud-Moon.svg");
+}

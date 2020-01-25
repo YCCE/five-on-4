@@ -1,0 +1,17 @@
+.match-preview-current {
+    background-color: #F8F8F8;
+    color: #707070;
+    border-radius: 2px;
+}
+.match-current-name {
+    text-decoration: none;
+    color: #707070;
+    font-size: 18px;
+    padding: 0;
+    margin: 4px 0 2px 5px;
+}
+.match-current-details {
+    font-size: 16px;
+    padding: 0;
+    margin: 0 0 10px 5px;
+}
