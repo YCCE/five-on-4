@@ -1,0 +1,48 @@
+.update-create-view {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    background-color:#F8F8F8;
+    border-radius: 2px;
+}
+.update-create-title {
+    margin: 5px 0 0 10px;
+    padding: 0;
+    font-size: 24px;
+    color: #707070;
+}
+.update-create-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 19px 175px 85px 175px;
+}
+.update-create-label-name, .update-create-label-start, .update-create-label-end, .update-create-label-venue {
+    margin: 0 0 5px 0;
+    padding: 0;
+    font-size: 16px;
+    color: #707070;
+    align-self: flex-start;
+}
+.update-create-name, .update-create-start, .update-create-end, .update-create-venue {
+    margin: 0 0 5px 0;
+    padding: 0;
+    height: 24px;
+    color: #707070;
+    border: 1px solid #707070;
+    border-radius: 2px;
+}
+.update-create-button {
+    align-self: flex-start;
+    margin: 10px 0 0 0;
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #444444;
+    height: 25px;
+    padding: 2px 11px;
+    box-sizing: border-box;
+    background-color: #CBCBCB;
+    border: none;
+    border-radius: 2px;
+}

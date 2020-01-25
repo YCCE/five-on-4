@@ -1,0 +1,105 @@
+.match-detailed-content {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    overflow: hidden;
+    background-color: #F8F8F8;
+    border-radius: 2px;
+
+}
+.detailed-image {
+    margin: 0;
+    padding: 0;
+}
+.detailed-match-info {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+.detailed-match-info > div {
+    flex-grow: 1;
+    width: 0;
+    padding: 0;
+    margin: 0;
+}
+.detailed-match-name {
+    margin: 7px 0 10px 5px;
+    padding: 0;
+    font-size: 24px;
+    color: #707070;
+    text-transform: capitalize;
+}
+.detailed-match-date-start, .detailed-match-date-end, .detailed-match-venue {
+    margin: 0 0 5px 5px;
+    padding: 0;
+    font-size: 18px;
+    color: #707070;
+}
+.match-detailed-basic-buttons {
+    margin: 15px 0 15px 5px;
+    display: flex;
+    flex-direction: row;
+}
+.match-detailed-basic-buttons > a {
+    height: 25px;
+    width: 168px;
+    background-color:#CBCBCB;
+    padding: 2px 0;
+    text-transform: uppercase;
+    border-radius: 2px;
+    color: #444444;
+    text-align: center;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin: 0px 18px 0 0px;
+}
+.match-detailed-basic-buttons > a:last-child {
+    width: auto;
+    padding: 2px 11px;
+    box-sizing: border-box;
+    margin: 0;
+}
+.detailed-players-part-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #707070;
+    padding: 0;
+    margin: 5px 0 7px 5px;
+}
+.detailed-player-list {
+    max-height: 20vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 0 0 0 21px;
+    margin: 0;
+    color: #707070;
+}
+.detailed-player-list > li {
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+.report-set-button {
+    height: 25px;
+    width: 168px;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 11px 0 13px 5px;
+}
+.report-set-button > a {
+    text-transform: uppercase;
+    font-size: 16px;
+    background-color:#CBCBCB;
+    padding: 2px 11px;
+    border-radius: 2px;
+    color: #444444;
+}
+.detailed-match-score {
+    margin: 0 0 0 5px;
+    font-size: 18px;
+    color: #707070;
+}
+.detailed-match-score > span {
+    font-weight: bold;
+}

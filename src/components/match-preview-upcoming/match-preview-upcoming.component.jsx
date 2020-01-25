@@ -2,50 +2,56 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./match-preview-upcoming.styles.css";
+import JoinUnjoinMatch from "../join-unjoin-match/join-unjoin-match.component";
 
-import JoinMatchButton from "../join-match-button/join-match-button.component";
-import UnjoinMatchButton from "../unjoin-match-button/unjoin-match-button.component";
 
-const MatchPreviewUpcoming = ({match_id, match_name, match_date_start, match_date_end, match_venue, match_players_signed_up, user_id, user_name, user_signed_up_matches, setStateMatches, onSetStatePlayerMatches, onEndPointFetch}) => {
 
-    // this should probably be a function because it repeats in match detailed too
-    const renderMatchAction = () => {
-        if(user_signed_up_matches && user_signed_up_matches.includes(match_id)){
-            return <UnjoinMatchButton
-                        onEndPointFetch={onEndPointFetch}
-                        match_id={match_id}
-                        setStateMatches={setStateMatches}
-                        user_id={user_id}
-                        user_name={user_name}
-                        onSetStatePlayerMatches={onSetStatePlayerMatches}
-                    />
-        }
-        else{
-            return <JoinMatchButton
-                        onEndPointFetch={onEndPointFetch}
-                        match_id={match_id}
-                        setStateMatches={setStateMatches}
-                        user_id={user_id}
-                        user_name={user_name}
-                        onSetStatePlayerMatches={onSetStatePlayerMatches}
-                    />
-        }
-    }
-
+const MatchPreviewUpcoming = (props) => {
+    const {
+        match_id, 
+        match_name, 
+        match_date_start, 
+        match_date_end, 
+        match_venue, 
+        match_players_signed_up, 
+        user_id, 
+        user_signed_up_matches, 
+        fetchEndPoint,
+        setStateMatches, 
+        setStatePlayerMatches, 
+        setStateGlobalMessage,
+    } = props;
+    
     return (
-        <div>
-            <h2>{match_name}</h2>
-            <p>starts: {new Date(match_date_start).toLocaleString()}</p>
-            <p>ends: {new Date(match_date_end).toLocaleString()}</p>
-            <p>players signed up: {match_players_signed_up}</p>
-            <p>venue: {match_venue}</p>
-            <Link to={`/match/${match_id}`}>
-                <input type="button" value="Details"/>
-            </Link>
-            {user_id? renderMatchAction(): <Link to="/login"><button>Login to join</button></Link>}
-
-            {/* to be removed */}
-            <p>// to be removed // match id: {match_id}</p>
+        <div className="match-preview-upcoming">
+            <img className="match-preview-image" src="https://dummyimage.com/355x174/123/fff.jpg&text=placeholder+image,+courtesy+of+https://dummyimage.com/" alt="generic atletico madrid photo"/>
+            
+            <div className="match-preview-info">
+                <h1 className="match-preview-name"><strong>{match_name}</strong></h1>
+                <p className="match-preview-date">>
+                    <span> {new Intl.DateTimeFormat("en-GB", {weekday: "long"}).format(new Date(match_date_start))}</span>
+                    <span>, {new Date(match_date_start).toDateString().slice(4)}</span>  
+                </p>
+                <p className="match-preview-time">>
+                    <span> {new Date(match_date_start).toTimeString().slice(0,5)} - </span>
+                    <span>{new Date(match_date_end).toTimeString().slice(0,5)}</span>
+                </p>
+                <p className="match-preview-venue">> at {match_venue}</p>
+                <p className="match-preview-signed-up"><strong>{match_players_signed_up} players joined so far!</strong></p>
+                <div className="match-preview-buttons">
+                    {user_id? (   
+                    <JoinUnjoinMatch className="match-preview-join"
+                        user_id={user_id}
+                        match_id={match_id} 
+                        user_signed_up_matches={user_signed_up_matches}
+                        fetchEndPoint={fetchEndPoint}
+                        setStateMatches={setStateMatches} 
+                        setStatePlayerMatches={setStatePlayerMatches} 
+                        setStateGlobalMessage={setStateGlobalMessage}
+                    />): <Link to="/login">Login to Join</Link>}
+                    <Link to={`/detailedmatch/${match_id}`}>Match Details</Link>
+                </div>
+            </div>
         </div>
     )
 }

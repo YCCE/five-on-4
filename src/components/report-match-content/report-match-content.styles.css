@@ -1,0 +1,137 @@
+.report-match-content {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    background-color:#F8F8F8;
+    border-radius: 2px;
+}
+.report-match-title {
+    margin: 5px 0 0 10px;
+    padding: 0;
+    font-size: 24px;
+    color: #707070;
+}
+.report-match-form {
+    width: 525px;
+    margin: 0 auto;
+}
+.report-match-part-title {
+    margin: 20px 0 5px 0;
+    padding: 0;
+    font-size: 18px;
+    color: #707070;
+}
+.report-match-label {
+    margin-bottom: 10px;
+}
+.report-match-inner-flex {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+.report-match-label {
+    margin-bottom: 10px;
+    color: #707070;
+    font-size: 16px;
+}
+.report-match-label > label:first-child {
+    font-weight: bold;
+}
+.report-match-player-name {
+    margin: 0 0 0 0;
+    width: 100px;
+    text-align: left;
+    font-size: 16px;
+    color: #707070;
+    font-weight: bold;
+}
+.report-match-player-attended {
+    margin: 0 0 0 0;
+    width: 100px;
+    text-align: center;
+}
+.report-match-player-home {
+    margin: 0 0 0 0;
+    width: 100px;
+    text-align: center;
+}
+.report-match-player-away {
+    margin: 0 0 0 0;
+    width: 100px;
+    text-align: center;
+}
+.report-match-player-goals {
+    margin: 0 0 0 0;
+    width: 100px;
+    text-align: center;
+}
+.goals-input {
+    width: 50px;
+    border: 1px solid #707070;
+    border-radius: 2px;
+    height: 21px;
+    padding: 0;
+    margin: 0 25px;
+    box-sizing: border-box;
+    color: #707070;
+}
+.report-match-player-list {
+    padding: 0;
+    margin: 0;
+}
+.report-match-score-title {
+    margin: 20px 0 5px 0;
+    padding: 0;
+    font-size: 18px;
+    color: #707070;
+}
+.report-match-score-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.report-match-score-flex > label {
+    font-size: 16px;
+    color: #707070;
+    margin: 0 0 5px 0;
+    padding: 0;
+}
+
+.report-match-home-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #707070;
+    border-radius: 2px;
+    height: 21px;
+    padding: 0;
+    margin: 0 25px 0 55px;
+    box-sizing: border-box;
+    color: #707070;
+}
+.report-match-away-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #707070;
+    border-radius: 2px;
+    height: 21px;
+    padding: 0;
+    margin: 0 25px 0 61px;
+    box-sizing: border-box;
+    color: #707070;
+}
+.report-match-submit-button {
+    height: 25px;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    background-color: #CBCBCB;
+    font-size: 16px;
+    color: #444444;
+    padding: 2px 11px;
+    margin: 10px 0 5px 0;
+}
