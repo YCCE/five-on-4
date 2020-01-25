@@ -45,12 +45,23 @@ class UpdateCreateMatch extends React.Component {
             (matchActionResponse.message === "the match updated successfully" || matchActionResponse.message === "new match successfully created")? 
             this.setState({redirect: `/detailedmatch/${matchActionResponse.data.match_id}`}): setStateGlobalMessage(matchActionResponse.message)
         })
-        .catch(console.log);
+        .catch(console.log)
+        .then(() => {
+            fetchEndPoint("get")
+            .then(previewMatchesResponse => previewMatchesResponse.message === "preview matches retrieved successfully" && setStateMatches(previewMatchesResponse.data))
+        // TODO // there might be an issue here where server sends response via its catch, but we dont test it here, and not logging it anywhere
+        // something for future - same for joined matches and detailed
+        // TODO // some redirect in case of no good - or just a message will do?
+            .catch(matchesError => setStateGlobalMessage("there was an issue retrieving preview matches"))
+        })
+        .catch(console.log)
     }
 
     render(){
         const {redirect, match} = this.state;
         const {goBack} = this.props.history;
+        console.log(this.state);
+        console.log(match);
 
         return(
         <div className="update-create-match">
@@ -59,7 +70,7 @@ class UpdateCreateMatch extends React.Component {
                 <UpdateCreateMatchForm
                     onChangeHandle={this.onChangeHandle}
                     onSubmitHandle={this.onSubmitHandle}
-                    match={match}
+                    matchForUpdate={match}
                 />
             </div>
             {redirect && <Redirect to={redirect}/>}

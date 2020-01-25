@@ -3,9 +3,10 @@ import { withRouter } from "react-router-dom";
 
 import "./update-create-match-form.styles.css";
 
-const UpdateCreateMatchForm = ({match, onChangeHandle, onSubmitHandle, location}) => {
-    const {match_name, match_date_start, match_date_end, match_venue} = match;
+const UpdateCreateMatchForm = ({matchForUpdate, onChangeHandle, onSubmitHandle, location}) => {
+    const {match_name, match_date_start, match_date_end, match_venue} = matchForUpdate;
     const {pathname} = location;
+    console.log(matchForUpdate);
 
     return(
         <div className="update-create-view">
