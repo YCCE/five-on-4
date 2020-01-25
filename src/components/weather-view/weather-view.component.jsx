@@ -55,39 +55,13 @@ class WeatherView extends React.Component {
                         </p>
                         <p className="weather-feels-like">Feels like {apparentTemperature}°C</p>
                         <p className="weather-wind">Wind speed: {windSpeed}km/h</p>
-                        {(precipProbability && precipType)? <p className="weather-precip">{precipProbability}% chance to <strong>{precipType}</strong></p>: null}
+                        {(precipProbability && precipType)? <p className="weather-precip">{precipProbability*100}% chance to <strong>{precipType}</strong></p>: null}
                     </div>
                     <div className={`weather-icon ${icon}`}/>
                 </div>
-
             </div>
-
-
-
-                  
-
-
-
         )
     }
 }
 
 export default WeatherView;
-
-
-
-{/*                 <div className="weather-info">
-                    <div className="weather-icon-summary">
-                        <div className={`weather-icon ${icon}`}/>
-                        <p>{icon}</p>
-                        <div>
-                            <p>{summary}</p>
-                            <p><strong>{temperature}°C</strong></p>
-                        </div>
-                    </div>
-                    <div className="weather-detailes">
-                        <p>feels like <strong>{apparentTemperature}°C</strong></p>
-                        <p>wind speed: <strong>{windSpeed} km/h</strong></p>
-                        {(precipProbability && precipType)? <p><strong>{precipProbability}%</strong> chance to <strong>{precipType}</strong></p>: null}
-                    </div>
-                </div> */}
